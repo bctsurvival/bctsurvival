@@ -1,0 +1,16 @@
+# Výchozí stránka a čeština
+DirectoryIndex index.php
+AddDefaultCharset UTF-8
+Options -Indexes
+
+# Delší mezipaměť pro fotky, styly a skripty (soubory mají otisk ?v=)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType text/css "access plus 30 days"
+  ExpiresByType application/javascript "access plus 30 days"
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml application/xml text/plain
+</IfModule>

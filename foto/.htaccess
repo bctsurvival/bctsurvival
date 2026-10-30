@@ -1,0 +1,4 @@
+# Ve složce s fotkami se nic nespouští
+<FilesMatch "\.(php|phtml|phar)$">
+  Require all denied
+</FilesMatch>
