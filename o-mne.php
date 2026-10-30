@@ -10,7 +10,6 @@ $places = places_count($all);
 $about = trim($s['about']) !== '' ? $s['about'] : default_about();
 
 $faq = [
-    ['Kde se potulky konají?', 'Nejčastěji v lesích kolem Starého Plzence a hradu Radyně (Zaječí rokle, Mechový vrch, Ostrá Hůrka, Val, Andrejšky, Skalní stezka). Další výpravy vedou na Toužimsko, třeba putování do Skoků přes Sovolusky.'],
     ['Jak často přibývají nové záznamy?', 'Zhruba jednou týdně, obvykle po víkendové potulce. Deník na webu sahá zpátky do roku ' . ($all ? substr(end($all)['date'], 0, 4) : date('Y')) . ', stránka BCT Survival na Facebooku existuje od roku ' . $s['since'] . '.'],
     ['Jak se mi můžete ozvat?', 'Napište na ' . $s['email'] . ' nebo zprávu přes Facebook BCT Survival.'],
 ];
@@ -77,7 +76,10 @@ page_head([
     <?php foreach ($faq as $f): ?>
     <details class="faq">
       <summary><?= e($f[0]) ?></summary>
-      <p><?= e($f[1]) ?></p>
+      <p><?= strtr(e($f[1]), [
+          e($s['email']) => '<a href="mailto:' . e($s['email']) . '">' . e($s['email']) . '</a>',
+          'Facebook BCT Survival' => '<a href="' . e($s['facebook']) . '" rel="noopener">Facebook BCT Survival</a>',
+      ]) ?></p>
     </details>
     <?php endforeach; ?>
   </div>

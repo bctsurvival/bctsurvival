@@ -61,8 +61,8 @@ page_head([
     <h2 id="nejnovejsi">Nejnovější záznamy</h2>
     <a class="more" href="denik.php">Celý deník</a>
   </div>
-  <ul class="cards">
-    <?php foreach (array_slice($all, 0, 6) as $e) { entry_card($e); } ?>
+  <ul class="cards cards-latest">
+    <?php foreach (array_slice($all, 0, 4) as $e) { entry_card($e); } ?>
   </ul>
 </section>
 

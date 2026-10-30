@@ -133,6 +133,10 @@ p { margin: 0 0 1em; }
 
 /* Kartotéční lístky */
 .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+/* Nejnovější záznamy: vždy plné řady (4, 2, nebo 1) */
+.cards-latest { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1000px) { .cards-latest { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .cards-latest { grid-template-columns: 1fr; } }
 .card[hidden] { display: none; }
 .card article { height: 100%; }
 .card-link {
