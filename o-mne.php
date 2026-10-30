@@ -45,7 +45,7 @@ page_head([
     <p class="muted">autor <?= e($s['site_name']) ?></p>
     <dl>
       <div><dt>V lese od</dt><dd><?= e($s['since']) ?></dd></div>
-      <div><dt>Záznamů</dt><dd><?= count($all) ?></dd></div>
+      <div><dt>Potulek</dt><dd><?= count(array_filter($all, fn($x) => $x['type'] === 'potulka')) ?></dd></div>
       <div><dt>Domovský les</dt><dd>pod Radyní</dd></div>
     </dl>
     <p><a class="btn full" href="mailto:<?= e($s['email']) ?>">Napsat e-mail</a></p>
