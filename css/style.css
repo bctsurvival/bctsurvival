@@ -269,10 +269,7 @@ select, input[type="search"], input[type="text"], input[type="email"], input[typ
 .profile-card dl div { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); }
 .profile-card dt { color: var(--muted); }
 .profile-card dd { margin: 0; font-weight: 700; }
-.faq { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; margin-bottom: 8px; }
 .help summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 600; }
-.faq summary { cursor: pointer; padding: 12px 16px; font-weight: 700; min-height: 44px; }
-.faq p { padding: 0 16px 8px; }
 @media (max-width: 820px) {
   .profile { grid-template-columns: 1fr; gap: 24px; }
   .profile-card { position: static; }

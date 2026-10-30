@@ -9,11 +9,6 @@ $all = entries();
 $places = places_count($all);
 $about = trim($s['about']) !== '' ? $s['about'] : default_about();
 
-$faq = [
-    ['Jak často přibývají nové záznamy?', 'Zhruba jednou týdně, obvykle po víkendové potulce. Deník na webu sahá zpátky do roku ' . ($all ? substr(end($all)['date'], 0, 4) : date('Y')) . ', stránka BCT Survival na Facebooku existuje od roku ' . $s['since'] . '.'],
-    ['Jak se mi můžete ozvat?', 'Napište na ' . $s['email'] . ' nebo zprávu přes Facebook BCT Survival.'],
-];
-
 page_head([
     'title' => 'O mně – ' . $s['nickname'] . ' | ' . $s['site_name'],
     'description' => 'Jsem ' . $s['nickname'] . ' a od roku ' . $s['since'] . ' píšu BCT Survival: potulky, houbaření, pochody a recenze výbavy z okolí Starého Plzence a Toužimi.',
@@ -37,13 +32,6 @@ page_head([
             'sameAs' => [$s['facebook']],
             'knowsAbout' => ['turistika', 'houbaření', 'bushcraft', 'geocaching', 'bojové potravinové dávky', 'nože'],
         ],
-    ], [
-        '@context' => 'https://schema.org',
-        '@type' => 'FAQPage',
-        'mainEntity' => array_map(fn($f) => [
-            '@type' => 'Question', 'name' => $f[0],
-            'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f[1]],
-        ], $faq),
     ]],
 ]);
 ?>
@@ -72,16 +60,6 @@ page_head([
       <li><a class="chip" href="denik.php?misto=<?= e(rawurlencode($name)) ?>"><?= e($name) ?> <span class="chip-n"><?= $n ?></span></a></li>
       <?php endforeach; ?>
     </ul>
-    <h2>Časté otázky</h2>
-    <?php foreach ($faq as $f): ?>
-    <details class="faq">
-      <summary><?= e($f[0]) ?></summary>
-      <p><?= strtr(e($f[1]), [
-          e($s['email']) => '<a href="mailto:' . e($s['email']) . '">' . e($s['email']) . '</a>',
-          'Facebook BCT Survival' => '<a href="' . e($s['facebook']) . '" rel="noopener">Facebook BCT Survival</a>',
-      ]) ?></p>
-    </details>
-    <?php endforeach; ?>
   </div>
 </div>
 <?php page_foot();
