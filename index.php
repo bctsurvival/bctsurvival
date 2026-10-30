@@ -7,8 +7,6 @@ $s = settings();
 $all = entries();
 $base = site_url();
 $places = places_count($all);
-$counts = array_count_values(array_column($all, 'type'));
-$years = (int)date('Y') - (int)$s['since'];
 
 page_head([
     'title' => $s['site_name'] . ' – potulky, houbaření a recenze výbavy z okolí Radyně a Toužimi',
@@ -46,7 +44,7 @@ page_head([
       <h1><?= e($s['site_name']) ?></h1>
       <p class="lead"><?= e($s['tagline']) ?> <?= e($s['intro']) ?></p>
       <p class="actions">
-        <a class="btn" href="kartoteka.php">Otevřít kartotéku</a>
+        <a class="btn" href="denik.php">Otevřít deník</a>
         <a class="btn btn-ghost" href="o-mne.php">Kdo je <?= e($s['nickname']) ?></a>
       </p>
     </div>
@@ -55,19 +53,13 @@ page_head([
 
 <section class="wrap facts" aria-labelledby="v-kostce">
   <h2 id="v-kostce" class="visually-hidden">V kostce</h2>
-  <dl class="stats">
-    <div><dt>Záznamů v kartotéce</dt><dd><?= count($all) ?></dd></div>
-    <div><dt>Potulek</dt><dd><?= (int)($counts['potulka'] ?? 0) ?></dd></div>
-    <div><dt>Míst</dt><dd><?= count($places) ?></dd></div>
-    <div><dt>Let v lese</dt><dd><?= $years ?></dd></div>
-  </dl>
-  <p class="summary"><strong><?= e($s['site_name']) ?></strong> je kartotéka potulek, pochodů, houbaření a recenzí outdoorové výbavy, kterou od roku <?= e($s['since']) ?> píše <?= e($s['nickname']) ?>. Většina výprav vede do lesů kolem Starého Plzence a hradu Radyně, další na Toužimsko. Ke každé potulce najdete datum, místa, vyprávění a fotky.</p>
+  <p class="summary"><strong><?= e($s['site_name']) ?></strong> je deník potulek, pochodů, houbaření a recenzí outdoorové výbavy, kterou od roku <?= e($s['since']) ?> píše <?= e($s['nickname']) ?>. Většina výprav vede do lesů kolem Starého Plzence a hradu Radyně, další na Toužimsko. Ke každé potulce najdete datum, místa, vyprávění a fotky.</p>
 </section>
 
 <section class="wrap section" aria-labelledby="nejnovejsi">
   <div class="section-head">
     <h2 id="nejnovejsi">Nejnovější záznamy</h2>
-    <a class="more" href="kartoteka.php">Celá kartotéka</a>
+    <a class="more" href="denik.php">Celý deník</a>
   </div>
   <ul class="cards">
     <?php foreach (array_slice($all, 0, 6) as $e) { entry_card($e); } ?>
@@ -80,7 +72,7 @@ page_head([
   </div>
   <ul class="chips">
     <?php foreach (array_slice($places, 0, 14, true) as $name => $n): ?>
-    <li><a class="chip" href="kartoteka.php?misto=<?= e(rawurlencode($name)) ?>"><?= e($name) ?> <span class="chip-n"><?= $n ?></span></a></li>
+    <li><a class="chip" href="denik.php?misto=<?= e(rawurlencode($name)) ?>"><?= e($name) ?> <span class="chip-n"><?= $n ?></span></a></li>
     <?php endforeach; ?>
   </ul>
 </section>
@@ -89,17 +81,17 @@ page_head([
   <div class="funfact">
     <p class="funfact-label">Věděli jste?</p>
     <h2 id="dve-radyne">Radyně jsou dvě</h2>
-    <p>V kartotéce se objevují dvě různé Radyně, tak ať se na výletě nespletete.</p>
+    <p>V deníku se objevují dvě různé Radyně, tak ať se na výletě nespletete.</p>
     <div class="funfact-grid">
       <div>
         <h3>Hrad Radyně u Starého Plzence</h3>
         <p>Zřícenina na vrchu nad Starým Plzencem (567 m n. m.), kterou má BCT Survival i v logu. Hrad se začal stavět za Karla IV. kolem roku 1353 a původně se jmenoval Karlskrone, tedy Karlova koruna. Jméno Radyně převzal až od kopce, na kterém stojí.</p>
-        <p><a href="kartoteka.php?misto=<?= rawurlencode('Radyně') ?>">Potulky na hrad Radyně</a></p>
+        <p><a href="denik.php?misto=<?= rawurlencode('Radyně') ?>">Potulky na hrad Radyně</a></p>
       </div>
       <div>
         <h3>Vesnice Radyně u Toužimi</h3>
         <p>Malá vesnice na Karlovarsku, která patří k městu Toužim. Žádný hrad tu nečekejte, zato jí vede cesta na pouť do Skoků přes Sovolusky a údolí Střely.</p>
-        <p><a href="kartoteka.php?misto=<?= rawurlencode('Radyně u Toužimi') ?>">Putování přes Radyni u Toužimi</a></p>
+        <p><a href="denik.php?misto=<?= rawurlencode('Radyně u Toužimi') ?>">Putování přes Radyni u Toužimi</a></p>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 # BCT Survival
 
-Web s kartotékou potulek, pochodů a recenzí výbavy. Píše Mnich.
+Web s deníkem potulek, pochodů a recenzí výbavy. Píše Mnich.
 
 - PHP 8 (rozšíření GD; ZIP a EXIF jsou volitelné), bez databáze. Data jsou v `data/*.json.php`, fotky v `foto/<id záznamu>/`.
 - Administrace je na adrese `/admin/`.

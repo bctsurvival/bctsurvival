@@ -11,7 +11,7 @@ $about = trim($s['about']) !== '' ? $s['about'] : default_about();
 
 $faq = [
     ['Kde se potulky konají?', 'Nejčastěji v lesích kolem Starého Plzence a hradu Radyně (Zaječí rokle, Mechový vrch, Ostrá Hůrka, Val, Andrejšky, Skalní stezka). Další výpravy vedou na Toužimsko, třeba putování do Skoků přes Sovolusky.'],
-    ['Jak často přibývají nové záznamy?', 'Zhruba jednou týdně, obvykle po víkendové potulce. Kartotéka sahá zpátky do roku ' . ($all ? substr(end($all)['date'], 0, 4) : date('Y')) . ', stránka BCT Survival na Facebooku existuje od roku ' . $s['since'] . '.'],
+    ['Jak často přibývají nové záznamy?', 'Zhruba jednou týdně, obvykle po víkendové potulce. Deník na webu sahá zpátky do roku ' . ($all ? substr(end($all)['date'], 0, 4) : date('Y')) . ', stránka BCT Survival na Facebooku existuje od roku ' . $s['since'] . '.'],
     ['Jak se mi můžete ozvat?', 'Napište na ' . $s['email'] . ' nebo zprávu přes Facebook BCT Survival.'],
 ];
 
@@ -67,10 +67,10 @@ page_head([
   <div class="prose">
     <p class="lead"><?= e($s['tagline']) ?> <?= e($s['intro']) ?></p>
     <?= format_text($about) ?>
-    <h2>Moje místa podle kartotéky</h2>
+    <h2>Moje místa podle deníku</h2>
     <ul class="chips">
       <?php foreach (array_slice($places, 0, 12, true) as $name => $n): ?>
-      <li><a class="chip" href="kartoteka.php?misto=<?= e(rawurlencode($name)) ?>"><?= e($name) ?> <span class="chip-n"><?= $n ?></span></a></li>
+      <li><a class="chip" href="denik.php?misto=<?= e(rawurlencode($name)) ?>"><?= e($name) ?> <span class="chip-n"><?= $n ?></span></a></li>
       <?php endforeach; ?>
     </ul>
     <h2>Časté otázky</h2>

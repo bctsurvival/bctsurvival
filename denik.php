@@ -27,27 +27,27 @@ $match = function (array $e) use ($typ, $misto, $rok, $q): bool {
 };
 $shown = count(array_filter($all, $match));
 
-$heading = 'Kartotéka';
+$heading = 'Deník';
 $bits = [];
 if ($typ) $bits[] = mb_strtolower(TYPES_PLURAL[$typ], 'UTF-8');
 if ($misto) $bits[] = $misto;
 if ($rok) $bits[] = $rok;
-$title = ($bits ? 'Kartotéka: ' . implode(', ', $bits) : 'Kartotéka potulek, pochodů a recenzí') . ' | ' . $s['site_name'];
+$title = ($bits ? 'Deník: ' . implode(', ', $bits) : 'Deník potulek, pochodů a recenzí') . ' | ' . $s['site_name'];
 $filtered = $typ || $misto || $rok || $q;
-$path = 'kartoteka.php' . ($misto && !$typ && !$rok && !$q ? '?misto=' . rawurlencode($misto) : '');
+$path = 'denik.php' . ($misto && !$typ && !$rok && !$q ? '?misto=' . rawurlencode($misto) : '');
 
-$GLOBALS['page_scripts'] = ['js/kartoteka.js'];
+$GLOBALS['page_scripts'] = ['js/denik.js'];
 page_head([
     'title' => $title,
     'description' => 'Všechny záznamy ' . $s['site_name'] . ' na jednom místě: ' . count($all)
         . ' potulek, pochodů, recenzí a míst. Hledejte podle druhu, místa, roku nebo slova.',
     'path' => $path,
-    'nav' => 'kartoteka.php',
+    'nav' => 'denik.php',
     'jsonld' => [[
         '@context' => 'https://schema.org',
         '@type' => 'CollectionPage',
-        'name' => 'Kartotéka ' . $s['site_name'],
-        'url' => $base . '/kartoteka.php',
+        'name' => 'Deník ' . $s['site_name'],
+        'url' => $base . '/denik.php',
         'inLanguage' => 'cs',
         'mainEntity' => [
             '@type' => 'ItemList',
@@ -62,19 +62,19 @@ page_head([
         '@type' => 'BreadcrumbList',
         'itemListElement' => [
             ['@type' => 'ListItem', 'position' => 1, 'name' => 'Úvod', 'item' => $base . '/'],
-            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Kartotéka', 'item' => $base . '/kartoteka.php'],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Deník', 'item' => $base . '/denik.php'],
         ],
     ]],
 ]);
 ?>
 <div class="wrap page-head">
-  <nav class="crumbs" aria-label="Drobečková navigace"><a href="./">Úvod</a> <span aria-hidden="true">›</span> Kartotéka</nav>
+  <nav class="crumbs" aria-label="Drobečková navigace"><a href="./">Úvod</a> <span aria-hidden="true">›</span> Deník</nav>
   <h1><?= e($heading) ?></h1>
   <p class="lead">Všechny potulky, pochody, recenze a místa na jednom místě. Vyberte druh, místo nebo rok, případně hledejte podle slova.</p>
 </div>
 
 <div class="wrap">
-  <form class="filters" method="get" action="kartoteka.php" role="search" aria-label="Filtr kartotéky">
+  <form class="filters" method="get" action="denik.php" role="search" aria-label="Filtr deníku">
     <fieldset class="types">
       <legend>Druh záznamu</legend>
       <label class="type-pill"><input type="radio" name="typ" value=""<?= $typ === '' ? ' checked' : '' ?>><span>Vše <span class="n"><?= count($all) ?></span></span></label>
@@ -108,12 +108,12 @@ page_head([
 
   <p class="result-count" role="status" aria-live="polite">
     <span id="count"><?= $shown ?></span> z <?= count($all) ?> záznamů
-    <a id="reset" class="reset" href="kartoteka.php"<?= $filtered ? '' : ' hidden' ?>>Zrušit filtr</a>
+    <a id="reset" class="reset" href="denik.php"<?= $filtered ? '' : ' hidden' ?>>Zrušit filtr</a>
   </p>
 
   <ul class="cards" id="cards">
     <?php foreach ($all as $e) { entry_card($e, !$match($e), 'h2'); } ?>
   </ul>
-  <p class="empty" id="empty"<?= $shown ? ' hidden' : '' ?>>Takový záznam v kartotéce zatím není. Zkuste jiné místo nebo slovo.</p>
+  <p class="empty" id="empty"<?= $shown ? ' hidden' : '' ?>>Takový záznam v deníku zatím není. Zkuste jiné místo nebo slovo.</p>
 </div>
 <?php page_foot();

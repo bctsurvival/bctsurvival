@@ -136,7 +136,7 @@ function default_about(): string
 ## Co je potulka
 Potulka není závod ani výkon. Je to pár kilometrů lesem, oči u země kvůli houbám, zastávka na vaření a horký čaj nebo káva z vařiče. Pak to sepíšu, aby se dalo vrátit, kudy jsem šel, co rostlo a co jsem v lese uvařil.
 
-## Co v kartotéce najdete
+## Co v deníku najdete
 - **Potulky** – vyprávění z výletů s fotkami
 - **Pochody a putování** – Plzenecká 50, Kolem Starého Plzence, putování do Skoků
 - **Recenze a výbava** – bojové potravinové dávky (BPD), jídla do batohu, nože, kávovary
@@ -282,7 +282,7 @@ function regen_static(): void
     $x = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
         . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
     $last = $list[0]['updated'] ?? ($list[0]['date'] ?? date('Y-m-d'));
-    foreach (['' => $last, 'kartoteka.php' => $last, 'o-mne.php' => $last] as $u => $d) {
+    foreach (['' => $last, 'denik.php' => $last, 'o-mne.php' => $last] as $u => $d) {
         $x .= "  <url><loc>" . e("$base/$u") . "</loc><lastmod>" . substr($d, 0, 10) . "</lastmod></url>\n";
     }
     foreach ($list as $e) {
@@ -298,7 +298,7 @@ function regen_static(): void
     }
     $places = array_slice(array_keys(places_count($list)), 0, 12);
     $t = "# {$s['site_name']}\n\n"
-        . "> Outdoorový deník a kartotéka potulek, pochodů a recenzí výbavy. Píše {$s['nickname']} od roku {$s['since']}, "
+        . "> Outdoorový deník potulek, pochodů a recenzí výbavy. Píše {$s['nickname']} od roku {$s['since']}, "
         . "převážně z okolí Starého Plzence (hrad Radyně) a Toužimi.\n\n"
         . "{$s['tagline']} {$s['intro']}\n\n"
         . "- Autor: {$s['nickname']} (přezdívka)\n"
@@ -308,7 +308,7 @@ function regen_static(): void
         . "- Nejčastější místa: " . implode(', ', $places) . "\n\n"
         . "## Hlavní stránky\n\n"
         . "- [Úvod]($base/): kdo je {$s['nickname']} a co na webu najdete\n"
-        . "- [Kartotéka]($base/kartoteka.php): všechny záznamy s filtrem podle druhu, místa a roku\n"
+        . "- [Deník]($base/denik.php): všechny záznamy s filtrem podle druhu, místa a roku\n"
         . "- [O mně]($base/o-mne.php): profil autora\n";
     foreach (TYPES_PLURAL as $k => $label) {
         if (empty($byType[$k])) {

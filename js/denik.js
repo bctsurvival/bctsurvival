@@ -1,4 +1,4 @@
-// Okamžitý filtr kartotéky bez načítání stránky. Bez JavaScriptu funguje formulář klasicky.
+// Okamžitý filtr deníku bez načítání stránky. Bez JavaScriptu funguje formulář klasicky.
 (function () {
   var form = document.querySelector('.filters');
   var cards = Array.prototype.slice.call(document.querySelectorAll('#cards .card'));
@@ -33,7 +33,19 @@
     if (q) params.set('q', data.get('q').trim());
     var qs = params.toString();
     reset.hidden = !qs;
-    history.replaceState(null, '', 'kartoteka.php' + (qs ? '?' + qs : ''));
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
+  }
+
+  // Filtr z adresy (např. odkaz z úvodu na místo) i tam, kde ho nezpracuje server
+  var init = new URLSearchParams(location.search);
+  if (init.toString()) {
+    var t = form.querySelector('input[name="typ"][value="' + (init.get('typ') || '') + '"]');
+    if (t) t.checked = true;
+    ['misto', 'rok', 'q'].forEach(function (k) {
+      var el = form.querySelector('[name="' + k + '"]');
+      if (el && init.get(k)) el.value = init.get(k);
+    });
+    apply();
   }
 
   form.addEventListener('change', apply);

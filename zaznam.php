@@ -14,9 +14,9 @@ foreach ($all as $i => $x) {
 
 if ($idx === null) {
     http_response_code(404);
-    page_head(['title' => 'Záznam nenalezen | ' . $s['site_name'], 'path' => 'kartoteka.php']);
-    echo '<div class="wrap page-head"><h1>Tenhle lístek v kartotéce není</h1>'
-        . '<p class="lead">Možná byl přejmenován nebo smazán. Zkuste ho najít v <a href="kartoteka.php">kartotéce</a>.</p></div>';
+    page_head(['title' => 'Záznam nenalezen | ' . $s['site_name'], 'path' => 'denik.php']);
+    echo '<div class="wrap page-head"><h1>Tenhle zápis v deníku není</h1>'
+        . '<p class="lead">Možná byl přejmenován nebo smazán. Zkuste ho najít v <a href="denik.php">deníku</a>.</p></div>';
     page_foot();
     exit;
 }
@@ -67,13 +67,13 @@ page_head([
     'path' => entry_url($e),
     'type' => 'article',
     'image' => $img,
-    'nav' => 'kartoteka.php',
+    'nav' => 'denik.php',
     'jsonld' => [$ld, [
         '@context' => 'https://schema.org',
         '@type' => 'BreadcrumbList',
         'itemListElement' => [
             ['@type' => 'ListItem', 'position' => 1, 'name' => 'Úvod', 'item' => $base . '/'],
-            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Kartotéka', 'item' => $base . '/kartoteka.php'],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Deník', 'item' => $base . '/denik.php'],
             ['@type' => 'ListItem', 'position' => 3, 'name' => $e['title'], 'item' => entry_url($e, true)],
         ],
     ]],
@@ -81,15 +81,15 @@ page_head([
 ?>
 <article class="entry">
   <div class="wrap narrow">
-    <nav class="crumbs" aria-label="Drobečková navigace"><a href="./">Úvod</a> <span aria-hidden="true">›</span> <a href="kartoteka.php">Kartotéka</a> <span aria-hidden="true">›</span> <?= e($e['title']) ?></nav>
+    <nav class="crumbs" aria-label="Drobečková navigace"><a href="./">Úvod</a> <span aria-hidden="true">›</span> <a href="denik.php">Deník</a> <span aria-hidden="true">›</span> <?= e($e['title']) ?></nav>
     <header class="entry-head">
       <p class="card-tab tab-<?= e($e['type']) ?>"><?= e($label) ?></p>
       <h1><?= e($e['title']) ?></h1>
       <p class="entry-meta"><time datetime="<?= e($e['date']) ?>"><?= e(date_cz($e['date'])) ?></time> · <?= e($s['nickname']) ?></p>
       <ul class="chips small" aria-label="Druh a místa">
-        <li><a class="chip" href="kartoteka.php?typ=<?= e($e['type']) ?>">Všechny: <?= e(mb_strtolower(TYPES_PLURAL[$e['type']] ?? $label)) ?></a></li>
+        <li><a class="chip" href="denik.php?typ=<?= e($e['type']) ?>">Všechny: <?= e(mb_strtolower(TYPES_PLURAL[$e['type']] ?? $label)) ?></a></li>
         <?php foreach ($places as $p): ?>
-        <li><a class="chip" href="kartoteka.php?misto=<?= e(rawurlencode($p)) ?>"><?= e($p) ?></a></li>
+        <li><a class="chip" href="denik.php?misto=<?= e(rawurlencode($p)) ?>"><?= e($p) ?></a></li>
         <?php endforeach; ?>
       </ul>
     </header>

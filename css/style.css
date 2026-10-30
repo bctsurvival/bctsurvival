@@ -189,7 +189,7 @@ p { margin: 0 0 1em; }
 .big { font-size: 1.2rem; font-weight: 700; word-break: break-word; }
 @media (max-width: 720px) { .about-teaser { grid-template-columns: 1fr; } }
 
-/* Kartotéka */
+/* Deník */
 .page-head { padding: 24px 0 8px; }
 .crumbs { font-size: 15px; color: var(--muted); margin-bottom: 12px; }
 .crumbs a { display: inline-block; padding: 10px 0; }
