@@ -2,7 +2,7 @@
 # GitHub pak web za 1–2 minuty sestaví znovu (zmenší fotky, vytvoří stránky).
 backend:
   name: github
-  repo: nedvidekm/bct-survival
+  repo: bctsurvival/bctsurvival
   branch: main
   commit_messages:
     create: "Nový zápis: {{slug}}"
@@ -11,7 +11,7 @@ backend:
     uploadMedia: "Fotka: {{path}}"
     deleteMedia: "Smazaná fotka: {{path}}"
 
-site_url: https://nedvidekm.github.io/bct-survival/
+site_url: https://bctsurvival.github.io/bctsurvival/
 media_folder: foto/nahrane
 public_folder: /foto/nahrane
 

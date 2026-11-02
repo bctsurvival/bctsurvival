@@ -5,7 +5,7 @@
 3. Uloží hotové HTML a odkazy přepíše na .html.
 
 Spuštění:  python3 build/build.py
-Proměnné:  SITE_URL  adresa webu (výchozí https://nedvidekm.github.io/bct-survival)
+Proměnné:  SITE_URL  adresa webu (výchozí https://bctsurvival.github.io/bctsurvival)
            PREVIEW=1 testovací verze: pruh nahoře a zákaz indexování
 """
 import hashlib
@@ -32,7 +32,7 @@ except ImportError:
 ROOT = Path(__file__).resolve().parent.parent
 BUILD = ROOT / '_build'
 SITE = ROOT / '_site'
-SITE_URL = os.environ.get('SITE_URL', 'https://nedvidekm.github.io/bct-survival').rstrip('/')
+SITE_URL = os.environ.get('SITE_URL', 'https://bctsurvival.github.io/bctsurvival').rstrip('/')
 PREVIEW = os.environ.get('PREVIEW') == '1'
 BIG, SMALL, PLACE = 1300, 480, 480
 MAX_PHOTOS = 3
