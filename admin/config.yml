@@ -103,12 +103,13 @@ collections:
             label_singular: místo
             widget: list
             summary: "{{fields.name}}"
-            hint: "Místa, která jde vybrat u zápisu. U zaškrtnutých se na úvodu ukáže zajímavost s fotkou (ideálně 4)."
+            hint: "Místa, která jde vybrat u zápisu. U zaškrtnutých se na úvodu střídá zajímavost s fotkou a na stránce Místa je popis (ideálně 4 místa)."
             fields:
               - { name: name, label: Název, widget: string }
               - { name: featured, label: Zobrazit na úvodu, widget: boolean, default: false }
               - { name: kicker, label: Krátký štítek, widget: string, required: false, hint: "Např. Zřícenina hradu · 567 m n. m." }
-              - { name: text, label: Zajímavost, widget: text, required: false }
+              - { name: text, label: Popis na stránce Místa, widget: text, required: false, hint: "Delší text o místě na stránce Místa." }
+              - { name: fact, label: Zajímavost na úvodu, widget: text, required: false, hint: "Krátká zajímavost do rámečku „Věděli jste?“ na úvodní stránce (1–2 věty). Když zůstane prázdná, použije se popis." }
               - { name: image, label: Fotka, widget: image, required: false }
       - name: pratele
         label: Spřátelené weby (loga dole)

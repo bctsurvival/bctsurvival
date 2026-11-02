@@ -132,6 +132,7 @@ function place_info(): array
     $out = [];
     foreach (data_read('mista', ['mista' => []])['mista'] ?? [] as $m) {
         if (!empty($m['featured']) && trim($m['text'] ?? '') !== '' && !empty($m['img'])) {
+            $m['fact'] = trim($m['fact'] ?? '') !== '' ? trim($m['fact']) : $m['text'];
             $out[$m['name']] = $m;
         }
     }

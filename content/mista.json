@@ -5,6 +5,7 @@
       "featured": true,
       "kicker": "Zřícenina hradu · 567 m n. m.",
       "text": "Hrad nad Starým Plzencem, který má BCT Survival i v logu. Stavět ho začal Karel IV. kolem roku 1353 a původně se jmenoval Karlskrone, tedy Karlova koruna. Pozor na záměnu: vesnice Radyně u Toužimi, kudy vede putování do Skoků, je úplně jiné místo.",
+      "fact": "Na vyhlídku hradní věže vede 114 schodů. Roku 1885 po nich vystoupal i císař František Josef I., aby odtud sledoval vojenské manévry v okolí.",
       "image": "/img/mista/radyne.jpg"
     },
     {
@@ -12,6 +13,7 @@
       "featured": true,
       "kicker": "Původní Plzeň",
       "text": "Tady stála první Plzeň. Hradiště na Hůrce zmiňuje kronikář Dětmar z Merseburku už roku 976. Když král Václav II. roku 1295 založil novou Plzeň na soutoku Mže a Radbuzy, zdejší hradiště se stalo Starou Plzní. Na Hůrce dodnes stojí románská rotunda sv. Petra a Pavla z konce 10. století.",
+      "fact": "Ve Starém Plzenci se od roku 1943 vyrábí Bohemia Sekt, a to v budovách bývalého pivovaru, který tu vařil pivo v letech 1873–1929.",
       "image": "/img/mista/stary-plzenec.jpg"
     },
     {
@@ -19,6 +21,7 @@
       "featured": true,
       "kicker": "Méně známé místo pod Radyní",
       "text": "Tichá rokle se skalami v lesích pod Radyní, kdysi trampský camp. Na stromě tu dodnes visí vlaječka „Trampský camp Zaječí rokle“. Na internetu o ní skoro nic nenajdete, o to častěji se objevuje v deníku: Mnich sem chodí vařit obědy, kontroluje tu kešku a odnáší odpadky, které tu po sobě nechali jiní.",
+      "fact": "Nejčastější místo Mnichových obědů. V deníku se objevuje v 11 zápisech: vařil tu adventní kari v mlze tak husté, že by se dala krájet, i svačil „tygry v lahvi“.",
       "image": "/img/mista/zajeci-rokle.jpg"
     },
     {
@@ -26,6 +29,7 @@
       "featured": true,
       "kicker": "Zaniklá obec a poutní místo",
       "text": "Kdysi „české Lurdy“ nad Žlutickou přehradou. Pouť začala podle legendy snem sedláka, kterému se zjevila Panna Maria. Roku 1748 sem přišlo přes 40 000 poutníků. Obec po válce zanikla, barokní kostel Navštívení Panny Marie z let 1736–1738 ale stojí dál a stará se o něj spolek Pod střechou. Mnich sem putuje pěšky z Toužimi.",
+      "fact": "Němečtí obyvatelé říkali Skokům Mariastock. Ves nezanikla hned po odsunu, vylidnila se až po odchodu nových osadníků. Roku 1960 tu žilo 16 lidí a poslední obyvatel zemřel roku 1982.",
       "image": "/img/mista/skoky.jpg"
     },
     {
@@ -33,6 +37,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -40,6 +45,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -47,6 +53,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -54,6 +61,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -61,6 +69,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -68,6 +77,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -75,6 +85,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -82,6 +93,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -89,6 +101,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -96,6 +109,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -103,6 +117,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -110,6 +125,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -117,6 +133,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -124,6 +141,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -131,6 +149,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -138,6 +157,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     },
     {
@@ -145,6 +165,7 @@
       "featured": false,
       "kicker": "",
       "text": "",
+      "fact": "",
       "image": ""
     }
   ]

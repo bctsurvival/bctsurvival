@@ -85,7 +85,7 @@ page_head([
       <img src="<?= e($info['img']) ?>" width="<?= $iw ?>" height="<?= $ih ?>" alt="" loading="lazy" decoding="async">
       <div>
         <h2><?= e($name) ?></h2>
-        <p><?= e($info['text']) ?></p>
+        <p><?= e($info['fact']) ?></p>
         <p><a href="mista.php#<?= e(slugify($name)) ?>">Další zajímavá místa</a> · <a href="denik.php?misto=<?= e(rawurlencode($name)) ?>">Zápisy odtud</a></p>
       </div>
     </div>
