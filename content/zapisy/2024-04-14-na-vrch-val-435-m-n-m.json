@@ -3,7 +3,7 @@
   "date": "2024-04-14",
   "type": "potulka",
   "places": [
-    "Val"
+    "Vrch Val"
   ],
   "text": "Val (435 m n. m.) je jedním z nejvyšších vrcholů města Plzně. Někdy je nazýván nesprávně Valík.",
   "photos": [
@@ -20,6 +20,6 @@
       "caption": "Jabloň"
     }
   ],
-  "fb_count": 21,
-  "published": true
+  "published": true,
+  "fb_count": 21
 }
