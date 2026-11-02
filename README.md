@@ -1,21 +1,25 @@
 # BCT Survival
 
-Web s deníkem potulek, pochodů a recenzí výbavy. Píše Mnich.
+Deník potulek, pochodů a recenzí výbavy. Píše Mnich.
 
-- PHP 8 (rozšíření GD; ZIP a EXIF jsou volitelné), bez databáze. Data jsou v `data/*.json.php`, fotky v `foto/<id záznamu>/`.
-- Administrace je na adrese `/admin/`.
+## Jak web funguje
 
-## Nahrání na hosting
+- Obsah je v `content/`: zápisy (`content/zapisy/*.json`), texty a kontakty (`content/nastaveni.json`) a místa (`content/mista.json`). Fotky jsou ve `foto/`.
+- Obsah se upravuje v administraci na adrese `/admin/` (Sveltia CMS). Přihlášení: „Sign In Using Access Token“ a osobní token GitHubu s právem zápisu do tohoto repozitáře.
+- Po každém uložení GitHub web znovu sestaví (`.github/workflows/web.yml`): zmenší fotky, vykreslí stránky ze šablon PHP do statického HTML a nasadí je na GitHub Pages. Trvá to 1–2 minuty.
 
-1. Přes FTP nahrajte celý obsah repozitáře do kořene webu (`www`), včetně souborů `.htaccess`.
-2. Složky `data/` a `foto/` musí mít právo zápisu (obvykle 755).
-3. Hned po nahrání otevřete `/admin/` a nastavte heslo. Dokud není nastavené, může ho nastavit kdokoli.
-4. V administraci otevřete Nastavení a vyplňte Adresu webu. Uložení vytvoří `sitemap.xml`, `llms.txt` a `robots.txt`.
+## Sestavení u sebe
 
-## Zapomenuté heslo
+Potřeba je PHP 8 a Python 3 s balíčky Pillow a pillow-heif.
 
-Přes FTP v souboru `data/settings.json.php` smažte hodnotu `password_hash` (nechte `""`). Pak na `/admin/` nastavte nové heslo.
+```
+python3 build/build.py
+```
 
-## Zálohy
+Hotový web je ve složce `_site`.
 
-Hosting zdarma zálohy nedělá. Zálohu stáhnete v administraci (Záloha), nebo přes FTP složky `data/` a `foto/`.
+## Spuštění na doméně
+
+1. Do kořene repozitáře přidat soubor `CNAME` s doménou.
+2. V `.github/workflows/web.yml` smazat řádek `PREVIEW: "1"` a nastavit `SITE_URL`.
+3. V `admin/config.yml` změnit `site_url`.

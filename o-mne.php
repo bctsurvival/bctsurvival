@@ -7,7 +7,7 @@ $s = settings();
 $base = site_url();
 $all = entries();
 $places = places_count($all);
-$about = trim($s['about']) !== '' ? $s['about'] : default_about();
+$about = $s['about'];
 
 page_head([
     'title' => 'O mně – ' . $s['nickname'] . ' | ' . $s['site_name'],

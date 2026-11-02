@@ -1,8 +1,8 @@
 <?php
 /**
- * BCT Survival – společné funkce webu i administrace.
- * Data jsou v souborech JSON (bez databáze), aby šel web nahrát na
- * jakýkoli PHP hosting jen zkopírováním souborů.
+ * BCT Survival – společné funkce šablon.
+ * Stránky se vykreslí při sestavení webu (build/build.py) do statických HTML.
+ * Data připraví sestavení z content/ do data/*.json.php.
  */
 
 declare(strict_types=1);
@@ -88,7 +88,6 @@ function default_settings(): array
         'facebook'    => 'https://www.facebook.com/BCTSurvival',
         'site_url'    => '',
         'since'       => '2015',
-        'password_hash' => '',
     ];
 }
 
@@ -126,56 +125,17 @@ function places_count(array $entries): array
     return $c;
 }
 
-/** Výchozí text „O mně“, dokud ho autor v administraci nepřepíše. */
-function default_about(): string
-{
-    return <<<TXT
-## Kdo jsem
-Říkají mi Mnich. Od roku 2015 píšu BCT Survival. Začínal jsem recenzemi výbavy, nožů a jídla do batohu, dnes jsou to hlavně potulky. Skoro každý týden mizím mezi stromy, nejčastěji do lesů kolem Starého Plzence a hradu Radyně, který mám i v logu.
 
-## Co je potulka
-Potulka není závod ani výkon. Je to pár kilometrů lesem, oči u země kvůli houbám, zastávka na vaření a horký čaj nebo káva z vařiče. Pak to sepíšu, aby se dalo vrátit, kudy jsem šel, co rostlo a co jsem v lese uvařil.
-
-## Co v deníku najdete
-- **Potulky** – vyprávění z výletů s fotkami
-- **Pochody a putování** – Plzenecká 50, Kolem Starého Plzence, putování do Skoků
-- **Recenze a výbava** – bojové potravinové dávky (BPD), jídla do batohu, nože, kávovary
-- **Geocaching** – kešky po cestě a úklidové akce CITO
-- **Místa** – zajímavá místa na Plzeňsku a Toužimsku
-
-## Výbava, která se mnou chodí
-Nože od TF Knives a Mikov, švýcarský nůž Victorinox, kuksa Kupilka, ruční kávovary Outin a Wacaco, pytlíky Sackfabrik a vybavení Scandinoff. Recenze píšu podle vlastní zkušenosti z terénu, ne podle katalogu.
-TXT;
-}
-
-/**
- * Zajímavosti o místech, kam Mnich chodí nejčastěji (pořadí = pořadí na úvodu).
- * Zdroje: Wikipedie (Radyně, Starý Plzenec), Novinky.cz a ČT24 (Skoky), Mnichovy zápisy (Zaječí rokle).
- */
+/** Zajímavosti o vybraných místech (content/mista.json, „Zobrazit na úvodu“). */
 function place_info(): array
 {
-    return [
-        'Radyně' => [
-            'img' => 'img/mista/radyne.jpg',
-            'kicker' => 'Zřícenina hradu · 567 m n. m.',
-            'text' => 'Hrad nad Starým Plzencem, který má BCT Survival i v logu. Stavět ho začal Karel IV. kolem roku 1353 a původně se jmenoval Karlskrone, tedy Karlova koruna. Pozor na záměnu: vesnice Radyně u Toužimi, kudy vede putování do Skoků, je úplně jiné místo.',
-        ],
-        'Starý Plzenec' => [
-            'img' => 'img/mista/stary-plzenec.jpg',
-            'kicker' => 'Původní Plzeň',
-            'text' => 'Tady stála první Plzeň. Hradiště na Hůrce zmiňuje kronikář Dětmar z Merseburku už roku 976. Když král Václav II. roku 1295 založil novou Plzeň na soutoku Mže a Radbuzy, zdejší hradiště se stalo Starou Plzní. Na Hůrce dodnes stojí románská rotunda sv. Petra a Pavla z konce 10. století.',
-        ],
-        'Zaječí rokle' => [
-            'img' => 'img/mista/zajeci-rokle.jpg',
-            'kicker' => 'Méně známé místo pod Radyní',
-            'text' => 'Tichá rokle se skalami v lesích pod Radyní, kdysi trampský camp. Na stromě tu dodnes visí vlaječka „Trampský camp Zaječí rokle“. Na internetu o ní skoro nic nenajdete, o to častěji se objevuje v deníku: Mnich sem chodí vařit obědy, kontroluje tu kešku a odnáší odpadky, které tu po sobě nechali jiní.',
-        ],
-        'Skoky' => [
-            'img' => 'img/mista/skoky.jpg',
-            'kicker' => 'Zaniklá obec a poutní místo',
-            'text' => 'Kdysi „české Lurdy“ nad Žlutickou přehradou. Pouť začala podle legendy snem sedláka, kterému se zjevila Panna Maria. Roku 1748 sem přišlo přes 40 000 poutníků. Obec po válce zanikla, barokní kostel Navštívení Panny Marie z let 1736–1738 ale stojí dál a stará se o něj spolek Pod střechou. Mnich sem putuje pěšky z Toužimi.',
-        ],
-    ];
+    $out = [];
+    foreach (data_read('mista', ['mista' => []])['mista'] ?? [] as $m) {
+        if (!empty($m['featured']) && trim($m['text'] ?? '') !== '' && !empty($m['img'])) {
+            $out[$m['name']] = $m;
+        }
+    }
+    return $out;
 }
 
 /* ---------- pomocné funkce ---------- */
@@ -216,9 +176,6 @@ function site_url(): string
         || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     $dir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
-    if (str_ends_with($dir, '/admin')) {
-        $dir = substr($dir, 0, -6);
-    }
     return ($https ? 'https' : 'http') . '://' . $host . $dir;
 }
 
@@ -258,18 +215,24 @@ function format_text(string $text): string
     $out = '';
     foreach (preg_split("~\n\s*\n~", $text) as $block) {
         $lines = explode("\n", trim($block));
-        if (str_starts_with($lines[0], '## ')) {
-            $out .= '<h2>' . inline(substr(array_shift($lines), 3)) . "</h2>\n";
+        if (preg_match('~^#{2,3} ~', $lines[0])) {
+            $out .= '<h2>' . inline(ltrim(array_shift($lines), '# ')) . "</h2>\n";
             if (!$lines) {
                 continue;
             }
         }
-        if (count(array_filter($lines, fn($l) => preg_match('~^[-•]\s~u', $l))) === count($lines)) {
+        if (count(array_filter($lines, fn($l) => preg_match('~^[-•*+]\s~u', $l))) === count($lines)) {
             $out .= "<ul>\n";
             foreach ($lines as $l) {
-                $out .= '<li>' . inline((string)preg_replace('~^[-•]\s+~u', '', $l)) . "</li>\n";
+                $out .= '<li>' . inline((string)preg_replace('~^[-•*+]\s+~u', '', $l)) . "</li>\n";
             }
             $out .= "</ul>\n";
+        } elseif (count(array_filter($lines, fn($l) => preg_match('~^\d+[.)]\s~', $l))) === count($lines)) {
+            $out .= "<ol>\n";
+            foreach ($lines as $l) {
+                $out .= '<li>' . inline((string)preg_replace('~^\d+[.)]\s+~', '', $l)) . "</li>\n";
+            }
+            $out .= "</ol>\n";
         } else {
             $out .= '<p>' . implode("<br>\n", array_map('inline', $lines)) . "</p>\n";
         }
@@ -279,10 +242,18 @@ function format_text(string $text): string
 
 function inline(string $s): string
 {
+    $s = str_replace('\\', '', $s); // escapování z editoru (např. 1\. ledna)
+    $links = [];
+    // [text](adresa) z editoru; schováme, aby je nepřepsalo automatické odkazování
+    $s = (string)preg_replace_callback('~\[([^\]]+)\]\((https?://[^\s)]+)\)~', function ($m) use (&$links) {
+        $links[] = '<a href="' . e($m[2]) . '" rel="noopener">' . e($m[1]) . '</a>';
+        return "\x01" . (count($links) - 1) . "\x01";
+    }, $s);
     $s = e($s);
-    $s = (string)preg_replace('~\*\*(.+?)\*\*~u', '<strong>$1</strong>', $s);
-    return (string)preg_replace_callback(
-        '~\b(https?://[^\s<]+|www\.[a-z0-9.-]+\.[a-z]{2,}[^\s<]*)~i',
+    $s = (string)preg_replace('~(\*\*|__)(.+?)\1~u', '<strong>$2</strong>', $s);
+    $s = (string)preg_replace('~(?<![\w*])\*(?![\s*])(.+?)(?<!\s)\*(?![\w*])~u', '<em>$1</em>', $s);
+    $s = (string)preg_replace_callback(
+        '~\b(https?://[^\s<\x01]+|www\.[a-z0-9.-]+\.[a-z]{2,}[^\s<\x01]*)~i',
         function ($m) {
             $url = rtrim($m[1], '.,);');
             $tail = substr($m[1], strlen($url));
@@ -291,6 +262,7 @@ function inline(string $s): string
         },
         $s
     );
+    return (string)preg_replace_callback("~\x01(\d+)\x01~", fn($m) => $links[(int)$m[1]], $s);
 }
 
 /** Otisk souboru pro obejití staré verze v mezipaměti prohlížeče. */
@@ -302,7 +274,7 @@ function asset(string $path): string
 
 /* ---------- statické soubory pro vyhledávače a AI ---------- */
 
-/** Přegeneruje sitemap.xml a llms.txt (volá se po každé změně v administraci). */
+/** Vytvoří sitemap.xml, llms.txt a robots.txt (volá sestavení webu). */
 function regen_static(): void
 {
     $s = settings();

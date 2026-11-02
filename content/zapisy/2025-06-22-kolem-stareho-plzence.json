@@ -1,0 +1,25 @@
+{
+  "title": "Kolem Starého Plzence",
+  "date": "2025-06-22",
+  "type": "pochod",
+  "places": [
+    "Starý Plzenec"
+  ],
+  "text": "",
+  "photos": [
+    {
+      "image": "/foto/2025-06-22-kolem-stareho-plzence/1.jpg",
+      "caption": "Výhled na Starý Plzenec"
+    },
+    {
+      "image": "/foto/2025-06-22-kolem-stareho-plzence/2.jpg",
+      "caption": "Řeka Úslava - Starý Plzenec"
+    },
+    {
+      "image": "/foto/2025-06-22-kolem-stareho-plzence/3.jpg",
+      "caption": "Radyně"
+    }
+  ],
+  "fb_count": 21,
+  "published": true
+}

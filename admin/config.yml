@@ -1,0 +1,112 @@
+# Administrace webu (Sveltia CMS). Každé uložení = změna v repozitáři,
+# GitHub pak web za 1–2 minuty sestaví znovu (zmenší fotky, vytvoří stránky).
+backend:
+  name: github
+  repo: nedvidekm/bct-survival
+  branch: main
+  commit_messages:
+    create: "Nový zápis: {{slug}}"
+    update: "Úprava: {{slug}}"
+    delete: "Smazáno: {{slug}}"
+    uploadMedia: "Fotka: {{path}}"
+    deleteMedia: "Smazaná fotka: {{path}}"
+
+site_url: https://nedvidekm.github.io/bct-survival/
+media_folder: foto/nahrane
+public_folder: /foto/nahrane
+
+collections:
+  - name: zapisy
+    label: Zápisy v deníku
+    label_singular: Zápis
+    description: Potulky, pochody, recenze a další zápisy. Nejvýš 3 fotky, zmenší se samy.
+    folder: content/zapisy
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    identifier_field: title
+    summary: "{{date}} · {{title}}"
+    sortable_fields: [date, title]
+    view_filters:
+      - { label: Potulky, field: type, pattern: potulka }
+      - { label: Recenze, field: type, pattern: recenze }
+      - { label: Skryté, field: published, pattern: false }
+    fields:
+      - { name: title, label: Název, widget: string }
+      - { name: date, label: Datum, widget: datetime, time_format: false, date_format: "D. M. YYYY", format: "YYYY-MM-DD" }
+      - name: type
+        label: Druh
+        widget: select
+        default: potulka
+        options:
+          - { label: Potulka, value: potulka }
+          - { label: Pochod a putování, value: pochod }
+          - { label: Recenze a výbava, value: recenze }
+          - { label: Geocaching, value: geocaching }
+          - { label: Místo, value: misto }
+          - { label: Akce, value: akce }
+      - name: places
+        label: Místa
+        widget: relation
+        collection: nastaveni
+        file: mista
+        value_field: "mista.*.name"
+        search_fields: ["mista.*.name"]
+        display_fields: ["mista.*.name"]
+        multiple: true
+        required: false
+        hint: Nové místo nejdřív přidejte v Nastavení → Místa.
+      - name: text
+        label: Text
+        widget: markdown
+        required: false
+        buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list]
+        editor_components: []
+      - name: photos
+        label: Fotky
+        label_singular: fotku
+        widget: list
+        max: 3
+        required: false
+        hint: Nejvýš 3 fotky. První je hlavní. Velké fotky z mobilu se samy zmenší.
+        fields:
+          - { name: image, label: Fotka, widget: image }
+          - { name: caption, label: Popisek, widget: string, required: false, hint: "Co je na fotce (nepovinné)." }
+      - { name: published, label: Zveřejnit na webu, widget: boolean, default: true }
+      - { name: fb_count, label: Počet fotek na Facebooku, widget: number, value_type: int, required: false, default: 0, hint: "Když je fotek na Facebooku víc, web pod zápisem odkáže na Facebook." }
+
+  - name: nastaveni
+    label: Nastavení
+    files:
+      - name: texty
+        label: Texty a kontakty
+        file: content/nastaveni.json
+        format: json
+        fields:
+          - { name: site_name, label: Název webu, widget: string }
+          - { name: nickname, label: Přezdívka, widget: string }
+          - { name: tagline, label: Motto, widget: string }
+          - { name: intro, label: Úvodní text, widget: text, hint: "Úvodní stránka a výsledky vyhledávání." }
+          - { name: about, label: O mně, widget: markdown, buttons: [bold, italic, link, heading-two, bulleted-list], editor_components: [] }
+          - { name: email, label: E-mail, widget: string }
+          - { name: facebook, label: Facebook, widget: string }
+          - { name: since, label: Na Facebooku od roku, widget: string }
+      - name: mista
+        label: Místa
+        file: content/mista.json
+        format: json
+        fields:
+          - name: mista
+            label: Místa
+            label_singular: místo
+            widget: list
+            summary: "{{fields.name}}"
+            hint: "Místa, která jde vybrat u zápisu. U zaškrtnutých se na úvodu ukáže zajímavost s fotkou (ideálně 4)."
+            fields:
+              - { name: name, label: Název, widget: string }
+              - { name: featured, label: Zobrazit na úvodu, widget: boolean, default: false }
+              - { name: kicker, label: Krátký štítek, widget: string, required: false, hint: "Např. Zřícenina hradu · 567 m n. m." }
+              - { name: text, label: Zajímavost, widget: text, required: false }
+              - { name: image, label: Fotka, widget: image, required: false }

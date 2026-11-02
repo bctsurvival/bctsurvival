@@ -1,6 +1,3 @@
-# Vzniká až na hostingu (heslo, pokusy o přihlášení)
-data/settings.json.php
-data/login.json.php
-data/*.tmp
-sitemap.xml
-llms.txt
+_build/
+_site/
+__pycache__/

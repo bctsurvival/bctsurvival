@@ -1,6 +1,0 @@
-# Vyhledávače i AI asistenti jsou vítáni
-User-agent: *
-Allow: /
-Disallow: /admin/
-
-Sitemap: /sitemap.xml
