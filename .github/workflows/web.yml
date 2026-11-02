@@ -29,7 +29,7 @@ jobs:
       - run: php --version
       - run: python3 build/build.py
         env:
-          PREVIEW: "1"   # testovací verze; před spuštěním na doméně odstranit
+          SITE_URL: https://bctsurvival.cz
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

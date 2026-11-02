@@ -23,3 +23,5 @@ Hotový web je ve složce `_site`.
 1. Do kořene repozitáře přidat soubor `CNAME` s doménou.
 2. V `.github/workflows/web.yml` smazat řádek `PREVIEW: "1"` a nastavit `SITE_URL`.
 3. V `admin/config.yml` změnit `site_url`.
+
+Hotovo 2. 11. 2026: web běží na https://bctsurvival.cz.

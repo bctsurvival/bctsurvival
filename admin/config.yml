@@ -11,7 +11,7 @@ backend:
     uploadMedia: "Fotka: {{path}}"
     deleteMedia: "Smazaná fotka: {{path}}"
 
-site_url: https://bctsurvival.github.io/bctsurvival/
+site_url: https://bctsurvival.cz/
 media_folder: foto/nahrane
 public_folder: /foto/nahrane
 
