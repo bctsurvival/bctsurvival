@@ -45,6 +45,12 @@ def slug(s):
     return re.sub(r'[^a-z0-9]+', '-', s).strip('-')[:60] or 'foto'
 
 
+def ascii_id(s):
+    """Adresa zápisu bez diakritiky (soubory z administrace můžou mít v názvu háčky a čárky)."""
+    s = s.lower().translate(str.maketrans('áäčďéěëíňóöřšťúůüýž', 'aacdeeeinoorstuuuyz'))
+    return re.sub(r'[^a-z0-9]+', '-', s).strip('-') or 'zapis'
+
+
 def save(img, path, size, quality):
     """Zmenší fotku na delší stranu `size` a uloží JPG. Vrací (šířka, výška)."""
     im = img.copy()
@@ -91,7 +97,7 @@ def prepare():
     entries, problems = [], []
     for f in sorted((ROOT / 'content/zapisy').glob('*.json')):
         e = json.loads(f.read_text(encoding='utf-8'))
-        eid = f.stem
+        eid = ascii_id(f.stem)
         photos, used = [], set()
         for p in (e.get('photos') or [])[:MAX_PHOTOS]:
             rel = (p.get('image') or '').lstrip('/')

@@ -12,6 +12,12 @@ backend:
     deleteMedia: "Smazaná fotka: {{path}}"
 
 site_url: https://bctsurvival.cz/
+
+# Názvy souborů bez háčků a čárek (adresy stránek)
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
 media_folder: foto/nahrane
 public_folder: /foto/nahrane
 
