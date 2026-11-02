@@ -15,7 +15,7 @@ function page_head(array $o): void
     $canonical = $base . '/' . ($o['path'] ?? '');
     $image = $o['image'] ?? $base . '/img/og.jpg';
     $nav = $o['nav'] ?? '';
-    $items = ['' => 'Úvod', 'denik.php' => 'Deník', 'o-mne.php' => 'O mně'];
+    $items = ['' => 'Úvod', 'denik.php' => 'Deník', 'mista.php' => 'Místa', 'o-mne.php' => 'O mně'];
     ?><!doctype html>
 <html lang="cs">
 <head>

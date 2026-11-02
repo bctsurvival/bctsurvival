@@ -77,25 +77,30 @@ page_head([
   </ul>
 </section>
 
-<section class="wrap section" aria-labelledby="dve-radyne">
+<section class="wrap section" aria-label="Věděli jste?">
   <div class="funfact">
     <p class="funfact-label">Věděli jste?</p>
-    <h2 id="dve-radyne">Radyně jsou dvě</h2>
-    <p>V deníku se objevují dvě různé Radyně, tak ať se na výletě nespletete.</p>
-    <div class="funfact-grid">
+    <?php $fi = 0; foreach (place_info() as $name => $info): [$iw, $ih] = getimagesize(APP_ROOT . '/' . $info['img']); ?>
+    <div class="funfact-item"<?= $fi++ ? ' hidden' : '' ?>>
+      <img src="<?= e($info['img']) ?>" width="<?= $iw ?>" height="<?= $ih ?>" alt="" loading="lazy" decoding="async">
       <div>
-        <h3>Hrad Radyně u Starého Plzence</h3>
-        <p>Zřícenina na vrchu nad Starým Plzencem (567 m n. m.), kterou má BCT Survival i v logu. Hrad se začal stavět za Karla IV. kolem roku 1353 a původně se jmenoval Karlskrone, tedy Karlova koruna. Jméno Radyně převzal až od kopce, na kterém stojí.</p>
-        <p><a href="denik.php?misto=<?= rawurlencode('Radyně') ?>">Potulky na hrad Radyně</a></p>
-      </div>
-      <div>
-        <h3>Vesnice Radyně u Toužimi</h3>
-        <p>Malá vesnice na Karlovarsku, která patří k městu Toužim. Žádný hrad tu nečekejte, zato jí vede cesta na pouť do Skoků přes Sovolusky a údolí Střely.</p>
-        <p><a href="denik.php?misto=<?= rawurlencode('Radyně u Toužimi') ?>">Putování přes Radyni u Toužimi</a></p>
+        <h2><?= e($name) ?></h2>
+        <p><?= e($info['text']) ?></p>
+        <p><a href="mista.php#<?= e(slugify($name)) ?>">Další zajímavá místa</a> · <a href="denik.php?misto=<?= e(rawurlencode($name)) ?>">Zápisy odtud</a></p>
       </div>
     </div>
+    <?php endforeach; ?>
   </div>
 </section>
+<script>
+// Při každé návštěvě jiné místo
+(function () {
+  var items = document.querySelectorAll('.funfact-item');
+  if (items.length < 2) return;
+  var n = Math.floor(Math.random() * items.length);
+  items.forEach(function (el, i) { el.hidden = i !== n; });
+})();
+</script>
 
 <section class="wrap section about-teaser" aria-labelledby="kdo">
   <div>

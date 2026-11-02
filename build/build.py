@@ -79,7 +79,7 @@ def write_data(name, value):
 def prepare():
     shutil.rmtree(BUILD, ignore_errors=True)
     BUILD.mkdir()
-    for f in ['index.php', 'denik.php', 'o-mne.php', 'zaznam.php']:
+    for f in ['index.php', 'denik.php', 'mista.php', 'o-mne.php', 'zaznam.php']:
         shutil.copy(ROOT / f, BUILD / f)
     for d in ['inc', 'css', 'js', 'img']:
         shutil.copytree(ROOT / d, BUILD / d)
@@ -164,7 +164,7 @@ def render(entries):
         def fix(html):
             html = html.replace(local, SITE_URL)
             html = re.sub(r'zaznam\.php\?id=([\w-]+)', r'zaznam-\1.html', html)
-            html = html.replace('denik.php', 'denik.html').replace('o-mne.php', 'o-mne.html')
+            html = html.replace('denik.php', 'denik.html').replace('o-mne.php', 'o-mne.html').replace('mista.php', 'mista.html')
             if PREVIEW:
                 html = html.replace('<head>', '<head>\n<meta name="robots" content="noindex, nofollow">', 1)
                 html = re.sub(r'(<main[^>]*>)', r'\1\n<p class="preview-bar">Testovací verze webu</p>', html, count=1)
@@ -172,7 +172,7 @@ def render(entries):
 
         shutil.rmtree(SITE, ignore_errors=True)
         SITE.mkdir()
-        pages = {'index.html': '/', 'denik.html': '/denik.php', 'o-mne.html': '/o-mne.php',
+        pages = {'index.html': '/', 'denik.html': '/denik.php', 'mista.html': '/mista.php', 'o-mne.html': '/o-mne.php',
                  '404.html': '/zaznam.php?id=neexistuje'}
         for e in entries:
             if e['published']:
