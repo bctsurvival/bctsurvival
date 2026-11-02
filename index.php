@@ -67,22 +67,33 @@ page_head([
 </section>
 
 <section class="wrap section" aria-labelledby="mista">
+  <div class="section-head">
+    <h2 id="mista">Kam chodím nejčastěji</h2>
+  </div>
+  <ul class="chips">
+    <?php foreach (array_slice($places, 0, 14, true) as $name => $n): ?>
+    <li><a class="chip" href="denik.php?misto=<?= e(rawurlencode($name)) ?>"><?= e($name) ?> <span class="chip-n"><?= $n ?></span></a></li>
+    <?php endforeach; ?>
+  </ul>
+</section>
+
+<section class="wrap section" aria-labelledby="dve-radyne">
   <div class="funfact">
     <p class="funfact-label">Věděli jste?</p>
-    <h2 id="mista">Kam chodím nejraději</h2>
-    <ul class="places">
-      <?php foreach (place_info() as $name => $info): [$iw, $ih] = getimagesize(APP_ROOT . '/' . $info['img']); ?>
-      <li class="place">
-        <img src="<?= e($info['img']) ?>" width="<?= $iw ?>" height="<?= $ih ?>" alt="" loading="lazy" decoding="async">
-        <div class="place-body">
-          <?php if (trim($info['kicker'] ?? '') !== ''): ?><p class="place-kicker"><?= e($info['kicker']) ?></p><?php endif; ?>
-          <h3><?= e($name) ?></h3>
-          <p><?= e($info['text']) ?></p>
-          <p><a href="denik.php?misto=<?= e(rawurlencode($name)) ?>">Zápisy z místa <?= e($name) ?> (<?= (int)($places[$name] ?? 0) ?>)</a></p>
-        </div>
-      </li>
-      <?php endforeach; ?>
-    </ul>
+    <h2 id="dve-radyne">Radyně jsou dvě</h2>
+    <p>V deníku se objevují dvě různé Radyně, tak ať se na výletě nespletete.</p>
+    <div class="funfact-grid">
+      <div>
+        <h3>Hrad Radyně u Starého Plzence</h3>
+        <p>Zřícenina na vrchu nad Starým Plzencem (567 m n. m.), kterou má BCT Survival i v logu. Hrad se začal stavět za Karla IV. kolem roku 1353 a původně se jmenoval Karlskrone, tedy Karlova koruna. Jméno Radyně převzal až od kopce, na kterém stojí.</p>
+        <p><a href="denik.php?misto=<?= rawurlencode('Radyně') ?>">Potulky na hrad Radyně</a></p>
+      </div>
+      <div>
+        <h3>Vesnice Radyně u Toužimi</h3>
+        <p>Malá vesnice na Karlovarsku, která patří k městu Toužim. Žádný hrad tu nečekejte, zato jí vede cesta na pouť do Skoků přes Sovolusky a údolí Střely.</p>
+        <p><a href="denik.php?misto=<?= rawurlencode('Radyně u Toužimi') ?>">Putování přes Radyni u Toužimi</a></p>
+      </div>
+    </div>
   </div>
 </section>
 
