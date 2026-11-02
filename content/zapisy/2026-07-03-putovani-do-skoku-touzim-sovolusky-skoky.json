@@ -3,25 +3,26 @@
   "date": "2026-07-03",
   "type": "pochod",
   "places": [
+    "Maria Stock - Skoky",
     "Toužim",
-    "Skoky",
-    "Sovolusky"
+    "Sovolusky",
+    "Radyně u Toužimi"
   ],
   "text": "",
   "photos": [
     {
-      "image": "/foto/2026-07-03-putovani-do-skoku-touzim-sovolusky-skoky/1.jpg",
-      "caption": "zámecká zahrada ve výstavbě"
-    },
-    {
-      "image": "/foto/2026-07-03-putovani-do-skoku-touzim-sovolusky-skoky/2.jpg",
+      "image": "/foto/nahrane/20260704_214242bez.jpg",
       "caption": ""
     },
     {
-      "image": "/foto/2026-07-03-putovani-do-skoku-touzim-sovolusky-skoky/3.jpg",
-      "caption": "Kaple sv. Anny (Radyňská kaple)"
+      "image": "/foto/nahrane/20260703_192725.jpg",
+      "caption": "nádrž Na Soutoku"
+    },
+    {
+      "image": "/foto/nahrane/20260704_125707.jpg",
+      "caption": "Lávka přes Střelu"
     }
   ],
-  "fb_count": 92,
-  "published": true
+  "published": true,
+  "fb_count": 92
 }
