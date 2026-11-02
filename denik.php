@@ -106,6 +106,12 @@ page_head([
     </div>
   </form>
 
+  <?php foreach (place_info() as $pn => $pi): ?>
+  <div class="place-note" data-place="<?= e($pn) ?>"<?= $misto === $pn ? '' : ' hidden' ?>>
+    <h2><?= e($pn) ?></h2>
+    <p><?= e($pi['text']) ?></p>
+  </div>
+  <?php endforeach; ?>
   <p class="result-count" role="status" aria-live="polite">
     <span id="count"><?= $shown ?></span> z <?= count($all) ?> záznamů
     <a id="reset" class="reset" href="denik.php"<?= $filtered ? '' : ' hidden' ?>>Zrušit filtr</a>

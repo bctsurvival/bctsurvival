@@ -180,13 +180,6 @@ p { margin: 0 0 1em; }
 .chips.small .chip { font-size: 15px; }
 
 /* Zajímavost */
-.funfact {
-  background: var(--surface); border: 2px dashed var(--fire); border-radius: 16px; padding: 24px clamp(16px, 4vw, 32px);
-}
-.funfact-label { display: inline-block; background: var(--fire); color: #fff; font-weight: 700; padding: 2px 10px; border-radius: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; }
-@media (prefers-color-scheme: dark) { .funfact-label { color: #14181b; } }
-.funfact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-@media (max-width: 720px) { .funfact-grid { grid-template-columns: 1fr; } }
 
 .about-teaser { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; }
 .contact-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
@@ -289,3 +282,18 @@ select, input[type="search"], input[type="text"], input[type="email"], input[typ
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* Místa na úvodu: 2 × 2 karty s fotkou */
+.places { list-style: none; margin: 0 0 24px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 760px) { .places { grid-template-columns: 1fr; } }
+.place { display: grid; grid-template-columns: 160px 1fr; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.place img { width: 100%; height: 100%; min-height: 160px; object-fit: cover; }
+.place-body { padding: 14px 16px 12px 0; min-width: 0; }
+.place-body h3 { font-size: 1.35rem; margin-bottom: .3em; }
+.place-body p { margin: 0 0 .6em; font-size: 16px; }
+.place-kicker { font-size: 13px !important; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--fire); }
+@media (max-width: 460px) { .place { grid-template-columns: 1fr; } .place img { height: 180px; min-height: 0; } .place-body { padding: 0 16px 12px; } }
+.more-places { font-size: 1.05rem; margin: 0 0 10px; }
+.place-note { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin: 0 0 16px; }
+.place-note h2 { font-size: 1.2rem; margin: 0 0 .3em; }
+.place-note p { margin: 0; font-size: 16px; }

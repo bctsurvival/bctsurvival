@@ -148,6 +148,36 @@ Nože od TF Knives a Mikov, švýcarský nůž Victorinox, kuksa Kupilka, ručn�
 TXT;
 }
 
+/**
+ * Zajímavosti o místech, kam Mnich chodí nejčastěji (pořadí = pořadí na úvodu).
+ * Zdroje: Wikipedie (Radyně, Starý Plzenec), Novinky.cz a ČT24 (Skoky), Mnichovy zápisy (Zaječí rokle).
+ */
+function place_info(): array
+{
+    return [
+        'Radyně' => [
+            'img' => 'img/mista/radyne.jpg',
+            'kicker' => 'Zřícenina hradu · 567 m n. m.',
+            'text' => 'Hrad nad Starým Plzencem, který má BCT Survival i v logu. Stavět ho začal Karel IV. kolem roku 1353 a původně se jmenoval Karlskrone, tedy Karlova koruna. Pozor na záměnu: vesnice Radyně u Toužimi, kudy vede putování do Skoků, je úplně jiné místo.',
+        ],
+        'Starý Plzenec' => [
+            'img' => 'img/mista/stary-plzenec.jpg',
+            'kicker' => 'Původní Plzeň',
+            'text' => 'Tady stála první Plzeň. Hradiště na Hůrce zmiňuje kronikář Dětmar z Merseburku už roku 976. Když král Václav II. roku 1295 založil novou Plzeň na soutoku Mže a Radbuzy, zdejší hradiště se stalo Starou Plzní. Na Hůrce dodnes stojí románská rotunda sv. Petra a Pavla z konce 10. století.',
+        ],
+        'Zaječí rokle' => [
+            'img' => 'img/mista/zajeci-rokle.jpg',
+            'kicker' => 'Méně známé místo pod Radyní',
+            'text' => 'Tichá rokle se skalami v lesích pod Radyní, kdysi trampský camp. Na stromě tu dodnes visí vlaječka „Trampský camp Zaječí rokle“. Na internetu o ní skoro nic nenajdete, o to častěji se objevuje v deníku: Mnich sem chodí vařit obědy, kontroluje tu kešku a odnáší odpadky, které tu po sobě nechali jiní.',
+        ],
+        'Skoky' => [
+            'img' => 'img/mista/skoky.jpg',
+            'kicker' => 'Zaniklá obec a poutní místo',
+            'text' => 'Kdysi „české Lurdy“ nad Žlutickou přehradou. Pouť začala podle legendy snem sedláka, kterému se zjevila Panna Maria. Roku 1748 sem přišlo přes 40 000 poutníků. Obec po válce zanikla, barokní kostel Navštívení Panny Marie z let 1736–1738 ale stojí dál a stará se o něj spolek Pod střechou. Mnich sem putuje pěšky z Toužimi.',
+        ],
+    ];
+}
+
 /* ---------- pomocné funkce ---------- */
 
 function e(?string $s): string

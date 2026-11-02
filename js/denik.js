@@ -25,6 +25,7 @@
       if (ok) shown++;
     });
     count.textContent = shown;
+    document.querySelectorAll('.place-note').forEach(function (n) { n.hidden = n.dataset.place !== misto; });
     empty.hidden = shown > 0;
     var params = new URLSearchParams();
     if (typ) params.set('typ', typ);
