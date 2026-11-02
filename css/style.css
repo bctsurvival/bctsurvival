@@ -305,6 +305,9 @@ select, input[type="search"], input[type="text"], input[type="email"], input[typ
 
 /* Střídavá zajímavost na úvodu */
 .funfact-item[hidden] { display: none; }
+.funfact-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.funfact-top .funfact-label { margin: 0; }
+.funfact-next[hidden] { display: none; }
 .funfact-item { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; margin-top: 12px; }
 .funfact-item img { width: 220px; height: 220px; object-fit: cover; border-radius: 12px; }
 @media (max-width: 600px) { .funfact-item { grid-template-columns: 1fr; } .funfact-item img { width: 100%; height: 200px; } }

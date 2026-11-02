@@ -78,8 +78,11 @@ page_head([
 </section>
 
 <section class="wrap section" aria-label="Věděli jste?">
-  <div class="funfact">
-    <p class="funfact-label">Věděli jste?</p>
+  <div class="funfact" id="funfact">
+    <div class="funfact-top">
+      <p class="funfact-label">Věděli jste?</p>
+      <?php if (count(place_info()) > 1): ?><button type="button" class="btn btn-ghost funfact-next" hidden>Další zajímavost</button><?php endif; ?>
+    </div>
     <?php $fi = 0; foreach (place_info() as $name => $info): [$iw, $ih] = getimagesize(APP_ROOT . '/' . $info['img']); ?>
     <div class="funfact-item"<?= $fi++ ? ' hidden' : '' ?>>
       <img src="<?= e($info['img']) ?>" width="<?= $iw ?>" height="<?= $ih ?>" alt="" loading="lazy" decoding="async">
@@ -93,12 +96,22 @@ page_head([
   </div>
 </section>
 <script>
-// Při každé návštěvě jiné místo
+// Náhodné místo při načtení, pak střídání po 30 s (pozastaví se pod myší nebo při ovládání klávesnicí)
 (function () {
-  var items = document.querySelectorAll('.funfact-item');
+  var box = document.getElementById('funfact');
+  var items = box ? box.querySelectorAll('.funfact-item') : [];
   if (items.length < 2) return;
-  var n = Math.floor(Math.random() * items.length);
-  items.forEach(function (el, i) { el.hidden = i !== n; });
+  var btn = box.querySelector('.funfact-next');
+  var n = Math.floor(Math.random() * items.length), paused = false;
+  function show(i) { n = i % items.length; items.forEach(function (el, j) { el.hidden = j !== n; }); }
+  show(n);
+  btn.hidden = false;
+  btn.addEventListener('click', function () { show(n + 1); });
+  box.addEventListener('mouseenter', function () { paused = true; });
+  box.addEventListener('mouseleave', function () { paused = false; });
+  box.addEventListener('focusin', function () { paused = true; });
+  box.addEventListener('focusout', function () { paused = false; });
+  setInterval(function () { if (!paused && !document.hidden) show(n + 1); }, 30000);
 })();
 </script>
 

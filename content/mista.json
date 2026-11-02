@@ -13,15 +13,15 @@
       "featured": true,
       "kicker": "Původní Plzeň",
       "text": "Tady stála první Plzeň. Hradiště na Hůrce zmiňuje kronikář Dětmar z Merseburku už roku 976. Když král Václav II. roku 1295 založil novou Plzeň na soutoku Mže a Radbuzy, zdejší hradiště se stalo Starou Plzní. Na Hůrce dodnes stojí románská rotunda sv. Petra a Pavla z konce 10. století.",
-      "fact": "Ve Starém Plzenci se od roku 1943 vyrábí Bohemia Sekt, a to v budovách bývalého pivovaru, který tu vařil pivo v letech 1873–1929.",
+      "fact": "Ve Starém Plzenci se vařilo pivo Zlatozdroj. Pivovar patřil bavorské firmě z Kulmbachu a vyvážel do Evropy i za oceán. V jeho sklepích dnes zraje Bohemia Sekt.",
       "image": "/img/mista/stary-plzenec.jpg"
     },
     {
       "name": "Zaječí rokle",
       "featured": true,
       "kicker": "Méně známé místo pod Radyní",
-      "text": "Tichá rokle se skalami v lesích pod Radyní, kdysi trampský camp. Na stromě tu dodnes visí vlaječka „Trampský camp Zaječí rokle“. Na internetu o ní skoro nic nenajdete, o to častěji se objevuje v deníku: Mnich sem chodí vařit obědy, kontroluje tu kešku a odnáší odpadky, které tu po sobě nechali jiní.",
-      "fact": "Nejčastější místo Mnichových obědů. V deníku se objevuje v 11 zápisech: vařil tu adventní kari v mlze tak husté, že by se dala krájet, i svačil „tygry v lahvi“.",
+      "text": "Tichá rokle se skalami v lesích pod Radyní, kdysi trampský camp. Na internetu o ní skoro nic nenajdete, o to častěji se objevuje v deníku: Mnich sem chodí vařit obědy, kontroluje tu kešku a odnáší odpadky, které tu po sobě nechali jiní.",
+      "fact": "Na stromě v rokli dodnes visí vlaječka „Trampský camp Zaječí rokle“, památka na časy, kdy tu tábořili trampové.",
       "image": "/img/mista/zajeci-rokle.jpg"
     },
     {
@@ -29,7 +29,7 @@
       "featured": true,
       "kicker": "Zaniklá obec a poutní místo",
       "text": "Kdysi „české Lurdy“ nad Žlutickou přehradou. Pouť začala podle legendy snem sedláka, kterému se zjevila Panna Maria. Roku 1748 sem přišlo přes 40 000 poutníků. Obec po válce zanikla, barokní kostel Navštívení Panny Marie z let 1736–1738 ale stojí dál a stará se o něj spolek Pod střechou. Mnich sem putuje pěšky z Toužimi.",
-      "fact": "Němečtí obyvatelé říkali Skokům Mariastock. Ves nezanikla hned po odsunu, vylidnila se až po odchodu nových osadníků. Roku 1960 tu žilo 16 lidí a poslední obyvatel zemřel roku 1982.",
+      "fact": "Odtud pochází rčení „panenko skákavá“. Zdejší obraz Panny Marie, lidově „panenka skokovská“, nevisel na oltáři pevně: při bohoslužbě ho skrytí ministranti posouvali na provazech a obraz přitom občas poskakoval.",
       "image": "/img/mista/skoky.jpg"
     },
     {
