@@ -131,6 +131,24 @@ def prepare():
             m['img'] = out
     write_data('mista', {'mista': mista})
 
+    # Loga spřátelených webů: zachovat průhlednost, uložit jako PNG
+    pratele = []
+    pf = ROOT / 'content/pratele.json'
+    for i, p in enumerate(json.loads(pf.read_text(encoding='utf-8')).get('pratele', []) if pf.is_file() else []):
+        rel = (p.get('logo') or '').lstrip('/')
+        url = (p.get('url') or '').strip()
+        if not rel or not (ROOT / rel).is_file() or not url:
+            continue
+        im = ImageOps.exif_transpose(Image.open(ROOT / rel))
+        im = im.convert('RGBA') if 'A' in im.mode or im.mode == 'P' else im.convert('RGB')
+        im.thumbnail((360, 120), Image.LANCZOS)
+        out = f'img/pratele-gen/{i:02d}-{slug(p.get("name") or "web")}.png'
+        (BUILD / out).parent.mkdir(parents=True, exist_ok=True)
+        im.save(BUILD / out, optimize=True)
+        pratele.append({'name': (p.get('name') or url).strip(), 'url': url, 'img': out,
+                        'w': im.size[0], 'h': im.size[1]})
+    write_data('pratele', pratele)
+
     for msg in problems:
         print('POZOR:', msg)
     return entries

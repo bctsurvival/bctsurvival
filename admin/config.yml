@@ -110,3 +110,19 @@ collections:
               - { name: kicker, label: Krátký štítek, widget: string, required: false, hint: "Např. Zřícenina hradu · 567 m n. m." }
               - { name: text, label: Zajímavost, widget: text, required: false }
               - { name: image, label: Fotka, widget: image, required: false }
+      - name: pratele
+        label: Spřátelené weby (loga dole)
+        file: content/pratele.json
+        format: json
+        fields:
+          - name: pratele
+            label: Spřátelené weby
+            label_singular: web
+            widget: list
+            required: false
+            summary: "{{fields.name}}"
+            hint: "Loga se zobrazí v řadě dole na každé stránce, nad patičkou, bez nadpisu. Kliknutím se otevře daný web. Pořadí jde měnit přetažením."
+            fields:
+              - { name: name, label: Název webu, widget: string, hint: "Na webu není vidět, čte ho jen čtečka pro nevidomé a Google." }
+              - { name: url, label: Adresa webu, widget: string, hint: "Celá adresa včetně https://" }
+              - { name: logo, label: Logo, widget: image, hint: "Nejlépe PNG s průhledným pozadím. Velikost se upraví sama (nejvýš 60 px na výšku)." }

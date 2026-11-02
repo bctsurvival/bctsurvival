@@ -64,8 +64,18 @@ function page_head(array $o): void
 function page_foot(): void
 {
     $s = settings();
+    $friends = data_read('pratele', []);
     ?>
 </main>
+<?php if ($friends): ?>
+<nav class="friends" aria-label="Spřátelené weby">
+  <ul class="wrap friends-in">
+    <?php foreach ($friends as $f): ?>
+    <li><a href="<?= e($f['url']) ?>" rel="noopener"><img src="<?= e($f['img']) ?>" width="<?= intdiv((int)$f['w'], 2) ?>" height="<?= intdiv((int)$f['h'], 2) ?>" alt="<?= e($f['name']) ?>" loading="lazy" decoding="async"></a></li>
+    <?php endforeach; ?>
+  </ul>
+</nav>
+<?php endif; ?>
 <footer class="site-footer">
   <div class="wrap footer-in">
     <div>
