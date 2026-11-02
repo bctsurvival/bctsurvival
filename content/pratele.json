@@ -1,3 +1,14 @@
 {
-  "pratele": []
+  "pratele": [
+    {
+      "name": "Dílna U mnicha",
+      "url": "https://dilnaumnicha.cz",
+      "logo": "/foto/nahrane/dum_erb_final.png"
+    },
+    {
+      "name": "PBMS",
+      "url": "https://dilnaumnicha.g6.cz/poutni-bratrstvo/",
+      "logo": "/foto/nahrane/dum_brat_b_transparentMalé.png"
+    }
+  ]
 }
