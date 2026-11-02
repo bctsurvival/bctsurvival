@@ -10,6 +10,7 @@
   --accent-ink: #ffffff;
   --link: #2a5a2f;
   --fire: #a8470c;
+  --fire-ink: #ffffff;
   --header: #1d2329;
   --header-ink: #f3ead9;
   --shadow: 0 1px 2px rgba(40, 30, 10, .08), 0 4px 14px rgba(40, 30, 10, .07);
@@ -30,6 +31,7 @@
     --accent-ink: #11160f;
     --link: #9fd3a8;
     --fire: #f2a65a;
+    --fire-ink: #14181b;
     --header: #0d1012;
     --shadow: 0 1px 2px rgba(0, 0, 0, .4);
   }
@@ -61,7 +63,7 @@ p { margin: 0 0 1em; }
 }
 .skip {
   position: absolute; left: 8px; top: -60px; z-index: 100;
-  background: var(--fire); color: #fff; padding: 10px 14px; border-radius: 6px;
+  background: var(--fire); color: var(--fire-ink); padding: 10px 14px; border-radius: 6px;
 }
 .skip:focus { top: 8px; }
 .wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
@@ -73,16 +75,16 @@ p { margin: 0 0 1em; }
   background: var(--header); color: var(--header-ink);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
 }
-.header-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; }
+.header-in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; min-height: 64px; padding-block: 6px; }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--header-ink); text-decoration: none; font-family: var(--serif); font-size: 1.25rem; font-weight: 700; letter-spacing: .02em; min-height: 44px; }
 .brand img { width: 44px; height: 44px; border-radius: 8px; }
-.site-header ul { list-style: none; display: flex; gap: 2px; margin: 0; padding: 0; }
+.site-header ul { list-style: none; display: flex; flex-wrap: wrap; gap: 2px; margin: 0; padding: 0; }
 .site-header nav a {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px;
   color: var(--header-ink); text-decoration: none; border-radius: 8px; font-weight: 600;
 }
 .site-header nav a:hover { background: rgba(255, 255, 255, .1); }
-.site-header nav a[aria-current="page"] { background: #f3ead9; color: #1d2329; }
+.site-header nav a[aria-current="page"] { background: var(--header-ink); color: var(--header); }
 @media (max-width: 560px) {
   .brand span { display: none; }
   .site-header nav a { padding: 0 10px; font-size: 16px; }
@@ -285,8 +287,7 @@ select, input[type="search"], input[type="text"], input[type="email"], input[typ
 
 /* Zajímavost na úvodu („Věděli jste?“) */
 .funfact { background: var(--surface); border: 2px dashed var(--fire); border-radius: 16px; padding: 24px clamp(16px, 4vw, 32px); }
-.funfact-label { display: inline-block; background: var(--fire); color: #fff; font-weight: 700; padding: 2px 10px; border-radius: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; }
-@media (prefers-color-scheme: dark) { .funfact-label { color: #14181b; } }
+.funfact-label { display: inline-block; background: var(--fire); color: var(--fire-ink); font-weight: 700; padding: 2px 10px; border-radius: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; }
 .funfact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 @media (max-width: 720px) { .funfact-grid { grid-template-columns: 1fr; } }
 .places { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -326,3 +327,9 @@ select, input[type="search"], input[type="text"], input[type="email"], input[typ
 .friends a { display: flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 4px; border-radius: 6px; }
 .friends img { max-height: 60px; width: auto; height: auto; max-width: 180px; }
 .friends a:focus-visible { outline-color: #a8470c; }
+
+/* Vlastní stránky */
+.page-gallery { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); margin: 24px 0; padding: 0; list-style: none; }
+.page-gallery figure { margin: 0; }
+.page-gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+.page-gallery figcaption { font-size: 15px; color: var(--muted); margin-top: 6px; }

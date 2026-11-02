@@ -7,6 +7,8 @@ $s = settings();
 $all = entries();
 $base = site_url();
 $places = places_count($all);
+$u = uvod();
+$ff = $u['funfact'];
 
 page_head([
     'title' => $s['site_name'] . ' – potulky, houbaření a recenze výbavy z okolí Radyně a Toužimi',
@@ -40,7 +42,7 @@ page_head([
   <div class="wrap hero-in">
     <img class="hero-logo" src="img/logo-440.jpg" width="256" height="256" alt="Logo BCT Survival: hrad Radyně nad lesem, oheň a letopočet 2015">
     <div>
-      <p class="kicker">Outdoorový deník od roku <?= e($s['since']) ?></p>
+      <p class="kicker"><?= e($u['hero_kicker']) ?></p>
       <h1><?= e($s['site_name']) ?></h1>
       <p class="lead"><?= e($s['tagline']) ?> <?= e($s['intro']) ?></p>
       <p class="actions">
@@ -53,22 +55,24 @@ page_head([
 
 <section class="wrap facts" aria-labelledby="v-kostce">
   <h2 id="v-kostce" class="visually-hidden">V kostce</h2>
-  <p class="summary"><strong><?= e($s['site_name']) ?></strong> je deník potulek, pochodů, houbaření a recenzí outdoorové výbavy, kterou od roku <?= e($s['since']) ?> píše <?= e($s['nickname']) ?>. Většina výprav vede do lesů kolem Starého Plzence a hradu Radyně, další na Toužimsko. Ke každé potulce najdete datum, místa, vyprávění a fotky.</p>
+  <?php if ($u['summary'] !== ''): ?>
+  <div class="summary"><?= format_text($u['summary']) ?></div>
+  <?php endif; ?>
 </section>
 
 <section class="wrap section" aria-labelledby="nejnovejsi">
   <div class="section-head">
-    <h2 id="nejnovejsi">Nejnovější záznamy</h2>
+    <h2 id="nejnovejsi"><?= e($u['latest_title']) ?></h2>
     <a class="more" href="denik.php">Celý deník</a>
   </div>
   <ul class="cards cards-latest">
-    <?php foreach (array_slice($all, 0, 4) as $e) { entry_card($e); } ?>
+    <?php foreach (array_slice($all, 0, $u['latest_count']) as $e) { entry_card($e); } ?>
   </ul>
 </section>
 
 <section class="wrap section" aria-labelledby="mista">
   <div class="section-head">
-    <h2 id="mista">Kam chodím nejčastěji</h2>
+    <h2 id="mista"><?= e($u['places_title']) ?></h2>
   </div>
   <ul class="chips">
     <?php foreach (array_slice($places, 0, 14, true) as $name => $n): ?>
@@ -77,11 +81,12 @@ page_head([
   </ul>
 </section>
 
-<section class="wrap section" aria-label="Věděli jste?">
+<?php if ($ff['enabled'] && place_info()): ?>
+<section class="wrap section" aria-label="<?= e($ff['title']) ?>">
   <div class="funfact" id="funfact">
     <div class="funfact-top">
-      <p class="funfact-label">Věděli jste?</p>
-      <?php if (count(place_info()) > 1): ?><button type="button" class="btn btn-ghost funfact-next" hidden>Další zajímavost</button><?php endif; ?>
+      <p class="funfact-label"><?= e($ff['title']) ?></p>
+      <?php if ($ff['button'] && count(place_info()) > 1): ?><button type="button" class="btn btn-ghost funfact-next" hidden>Další zajímavost</button><?php endif; ?>
     </div>
     <?php $fi = 0; foreach (place_info() as $name => $info): [$iw, $ih] = getimagesize(APP_ROOT . '/' . $info['img']); ?>
     <div class="funfact-item"<?= $fi++ ? ' hidden' : '' ?>>
@@ -102,29 +107,30 @@ page_head([
   var items = box ? box.querySelectorAll('.funfact-item') : [];
   if (items.length < 2) return;
   var btn = box.querySelector('.funfact-next');
+  var auto = <?= $ff['auto'] ? 'true' : 'false' ?>, ms = <?= (int)$ff['seconds'] * 1000 ?>;
   var n = Math.floor(Math.random() * items.length), paused = false;
   function show(i) { n = i % items.length; items.forEach(function (el, j) { el.hidden = j !== n; }); }
   show(n);
-  btn.hidden = false;
-  btn.addEventListener('click', function () { show(n + 1); });
+  if (btn) { btn.hidden = false; btn.addEventListener('click', function () { show(n + 1); }); }
   box.addEventListener('mouseenter', function () { paused = true; });
   box.addEventListener('mouseleave', function () { paused = false; });
   box.addEventListener('focusin', function () { paused = true; });
   box.addEventListener('focusout', function () { paused = false; });
-  setInterval(function () { if (!paused && !document.hidden) show(n + 1); }, 30000);
+  if (auto) setInterval(function () { if (!paused && !document.hidden) show(n + 1); }, ms);
 })();
 </script>
+<?php endif; ?>
 
 <section class="wrap section about-teaser" aria-labelledby="kdo">
   <div>
-    <h2 id="kdo">Kdo píše</h2>
-    <p>Jsem <?= e($s['nickname']) ?>. Skoro každý víkend balím batoh, vařič a něco dobrého k jídlu a mizím do lesa. Píšu o tom, kudy jsem šel, co rostlo, co jsem uvařil a jak se osvědčila výbava.</p>
+    <h2 id="kdo"><?= e($u['about_title']) ?></h2>
+    <?= format_text($u['about_text']) ?>
     <p><a class="btn btn-ghost" href="o-mne.php">Více o mně</a></p>
   </div>
   <div class="contact-box">
-    <h2>Napište mi</h2>
+    <h2><?= e($u['contact_title']) ?></h2>
     <p><a class="plain big" href="mailto:<?= e($s['email']) ?>"><?= e($s['email']) ?></a></p>
-    <p>Novinky z každé potulky najdete i na <a href="<?= e($s['facebook']) ?>" rel="noopener">Facebooku</a>.</p>
+    <?= format_text($u['contact_text']) ?>
   </div>
 </section>
 <?php page_foot();

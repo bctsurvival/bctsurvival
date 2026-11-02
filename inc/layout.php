@@ -16,6 +16,11 @@ function page_head(array $o): void
     $image = $o['image'] ?? $base . '/img/og.jpg';
     $nav = $o['nav'] ?? '';
     $items = ['' => 'Úvod', 'denik.php' => 'Deník', 'mista.php' => 'Místa', 'o-mne.php' => 'O mně'];
+    foreach (stranky() as $p) {
+        if ($p['menu']) {
+            $items['stranka.php?id=' . $p['id']] = $p['menu_label'] ?: $p['title'];
+        }
+    }
     ?><!doctype html>
 <html lang="cs">
 <head>
@@ -36,6 +41,9 @@ function page_head(array $o): void
 <link rel="icon" href="img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="img/logo-180.png">
 <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
+<?php if (is_file(APP_ROOT . '/css/vzhled.css')): ?>
+<link rel="stylesheet" href="<?= e(asset('css/vzhled.css')) ?>">
+<?php endif; ?>
 <?php foreach ($o['jsonld'] ?? [] as $j): ?>
 <script type="application/ld+json"><?= json_encode($j, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?></script>
 <?php endforeach; ?>

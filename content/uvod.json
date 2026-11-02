@@ -1,0 +1,18 @@
+{
+  "hero_kicker": "Outdoorový deník od roku 2015",
+  "summary": "**BCT Survival** je deník potulek, pochodů, houbaření a recenzí outdoorové výbavy, kterou od roku 2015 píše Mnich. Většina výprav vede do lesů kolem Starého Plzence a hradu Radyně, další na Toužimsko. Ke každé potulce najdete datum, místa, vyprávění a fotky.",
+  "latest_title": "Nejnovější záznamy",
+  "latest_count": 4,
+  "places_title": "Kam chodím nejčastěji",
+  "funfact": {
+    "enabled": true,
+    "title": "Věděli jste?",
+    "auto": true,
+    "seconds": 30,
+    "button": true
+  },
+  "about_title": "Kdo píše",
+  "about_text": "Jsem Mnich. Skoro každý víkend balím batoh, vařič a něco dobrého k jídlu a mizím do lesa. Píšu o tom, kudy jsem šel, co rostlo, co jsem uvařil a jak se osvědčila výbava.",
+  "contact_title": "Napište mi",
+  "contact_text": "Novinky z každé potulky najdete i na [Facebooku](https://www.facebook.com/BCTSurvival)."
+}

@@ -126,6 +126,44 @@ function places_count(array $entries): array
 }
 
 
+/** Texty a nastavení úvodní stránky (content/uvod.json) s výchozími hodnotami. */
+function uvod(): array
+{
+    $d = [
+        'hero_kicker' => 'Outdoorový deník od roku ' . settings()['since'],
+        'summary' => '',
+        'latest_title' => 'Nejnovější záznamy',
+        'latest_count' => 4,
+        'places_title' => 'Kam chodím nejčastěji',
+        'about_title' => 'Kdo píše',
+        'about_text' => '',
+        'contact_title' => 'Napište mi',
+        'contact_text' => '',
+    ];
+    $u = array_merge($d, array_filter(data_read('uvod', []), fn($v) => $v !== '' && $v !== null));
+    $u['funfact'] = array_merge(['enabled' => true, 'title' => 'Věděli jste?', 'auto' => true, 'seconds' => 30, 'button' => true],
+        is_array($u['funfact'] ?? null) ? array_filter($u['funfact'], fn($v) => $v !== '' && $v !== null) : []);
+    $u['funfact']['seconds'] = max(5, min(600, (int)$u['funfact']['seconds']));
+    $u['latest_count'] = max(1, min(12, (int)$u['latest_count']));
+    return $u;
+}
+
+/** Vlastní stránky z administrace. */
+function stranky(): array
+{
+    return data_read('stranky', []);
+}
+
+function stranka_find(string $id): ?array
+{
+    foreach (stranky() as $p) {
+        if ($p['id'] === $id) {
+            return $p;
+        }
+    }
+    return null;
+}
+
 /** Zajímavosti o vybraných místech (content/mista.json, „Zobrazit na úvodu“). */
 function place_info(): array
 {
@@ -285,7 +323,11 @@ function regen_static(): void
     $x = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
         . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
     $last = $list[0]['updated'] ?? ($list[0]['date'] ?? date('Y-m-d'));
-    foreach (['' => $last, 'denik.php' => $last, 'o-mne.php' => $last] as $u => $d) {
+    $urls = ['' => $last, 'denik.php' => $last, 'mista.php' => $last, 'o-mne.php' => $last];
+    foreach (stranky() as $p) {
+        $urls['stranka.php?id=' . $p['id']] = $p['updated'] ?: $last;
+    }
+    foreach ($urls as $u => $d) {
         $x .= "  <url><loc>" . e("$base/$u") . "</loc><lastmod>" . substr($d, 0, 10) . "</lastmod></url>\n";
     }
     foreach ($list as $e) {
@@ -312,7 +354,11 @@ function regen_static(): void
         . "## Hlavní stránky\n\n"
         . "- [Úvod]($base/): kdo je {$s['nickname']} a co na webu najdete\n"
         . "- [Deník]($base/denik.php): všechny záznamy s filtrem podle druhu, místa a roku\n"
+        . "- [Místa]($base/mista.php): zajímavosti o místech, kam autor chodí\n"
         . "- [O mně]($base/o-mne.php): profil autora\n";
+    foreach (stranky() as $p) {
+        $t .= "- [{$p['title']}]($base/stranka.php?id={$p['id']})" . ($p['description'] ? ': ' . $p['description'] : '') . "\n";
+    }
     foreach (TYPES_PLURAL as $k => $label) {
         if (empty($byType[$k])) {
             continue;

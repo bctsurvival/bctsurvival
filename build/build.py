@@ -79,7 +79,7 @@ def write_data(name, value):
 def prepare():
     shutil.rmtree(BUILD, ignore_errors=True)
     BUILD.mkdir()
-    for f in ['index.php', 'denik.php', 'mista.php', 'o-mne.php', 'zaznam.php']:
+    for f in ['index.php', 'denik.php', 'mista.php', 'o-mne.php', 'zaznam.php', 'stranka.php']:
         shutil.copy(ROOT / f, BUILD / f)
     for d in ['inc', 'css', 'js', 'img']:
         shutil.copytree(ROOT / d, BUILD / d)
@@ -122,7 +122,8 @@ def prepare():
         })
     write_data('entries', entries)
 
-    mista = json.loads((ROOT / 'content/mista.json').read_text(encoding='utf-8')).get('mista', [])
+    mista = [json.loads(f.read_text(encoding='utf-8')) for f in sorted((ROOT / 'content/mista').glob('*.json'))]
+    mista.sort(key=lambda m: (int(m.get('order') or 999), m.get('name', '')))
     for m in mista:
         rel = (m.get('image') or '').lstrip('/')
         if m.get('featured') and rel and (ROOT / rel).is_file():
@@ -149,9 +150,126 @@ def prepare():
                         'w': im.size[0], 'h': im.size[1]})
     write_data('pratele', pratele)
 
+    # Úvodní stránka
+    uf = ROOT / 'content/uvod.json'
+    write_data('uvod', json.loads(uf.read_text(encoding='utf-8')) if uf.is_file() else {})
+
+    # Vlastní stránky (content/stranky)
+    pages = []
+    for f in sorted((ROOT / 'content/stranky').glob('*.json')):
+        p = json.loads(f.read_text(encoding='utf-8'))
+        if p.get('published') is False:
+            continue
+        pid = slug(f.stem)
+        if pid in RESERVED or pid.startswith('zaznam-'):
+            pid += '-stranka'
+        photos = []
+        for i, ph in enumerate((p.get('photos') or [])[:12]):
+            rel = (ph.get('image') or '').lstrip('/')
+            if not rel or not (ROOT / rel).is_file():
+                problems.append(f'stránka {f.stem}: chybí fotka {rel}')
+                continue
+            im = open_photo(ROOT / rel)
+            name = f'{i + 1:02d}-{slug(Path(rel).stem)}'
+            w, h = save(im, BUILD / 'foto' / f'stranka-{pid}' / f'{name}.jpg', BIG, 80)
+            sw, sh = save(im, BUILD / 'foto' / f'stranka-{pid}' / f'{name}-m.jpg', SMALL, 74)
+            photos.append({'file': f'{name}.jpg', 'w': w, 'h': h, 'sw': sw, 'sh': sh,
+                           'caption': (ph.get('caption') or '').strip()})
+        pages.append({'id': pid, 'title': (p.get('title') or pid).strip(),
+                      'menu': bool(p.get('menu')), 'menu_label': (p.get('menu_label') or '').strip(),
+                      'order': int(p.get('order') or 50), 'description': (p.get('description') or '').strip(),
+                      'text': (p.get('text') or '').strip(), 'photos': photos,
+                      'updated': last_change(f)})
+    pages.sort(key=lambda x: (x['order'], x['title']))
+    write_data('stranky', pages)
+
+    write_theme()
+
     for msg in problems:
         print('POZOR:', msg)
     return entries
+
+
+RESERVED = {'index', 'denik', 'mista', 'o-mne', 'zaznam', 'stranka', '404', 'admin', 'css', 'js', 'img', 'foto',
+            'sitemap', 'robots', 'llms'}
+
+
+def hex_rgb(h):
+    h = (h or '').strip().lstrip('#')
+    if len(h) == 3:
+        h = ''.join(c * 2 for c in h)
+    if not re.fullmatch(r'[0-9a-fA-F]{6}', h):
+        return None
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def lum(c):
+    ch = [v / 255 for v in c]
+    ch = [v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in ch]
+    return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2]
+
+
+def contrast(a, b):
+    la, lb = sorted([lum(a), lum(b)], reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
+def to_hex(c):
+    return '#%02x%02x%02x' % tuple(round(v) for v in c)
+
+
+def readable(fg, bg, need=4.5):
+    """Když barva textu na pozadí není čitelná, posune ji k černé nebo bílé, dokud nebude."""
+    if contrast(fg, bg) >= need:
+        return fg, False
+    target = (0, 0, 0) if contrast((0, 0, 0), bg) >= contrast((255, 255, 255), bg) else (255, 255, 255)
+    for t in range(1, 21):
+        c = tuple(fg[i] + (target[i] - fg[i]) * t / 20 for i in range(3))
+        if contrast(c, bg) >= need:
+            return c, True
+    return target, True
+
+
+def best_ink(bg):
+    return (17, 22, 15) if contrast((17, 22, 15), bg) >= contrast((255, 255, 255), bg) else (255, 255, 255)
+
+
+def write_theme():
+    """Barvy z administrace (content/vzhled.json) -> css/vzhled.css. Nečitelné kombinace opraví."""
+    vf = ROOT / 'content/vzhled.json'
+    v = json.loads(vf.read_text(encoding='utf-8')) if vf.is_file() else {}
+    out = BUILD / 'css/vzhled.css'
+    if out.exists():
+        out.unlink()
+    if not v.get('custom'):
+        return
+    bg = hex_rgb(v.get('bg')) or (245, 238, 226)
+    surface = hex_rgb(v.get('surface')) or bg
+    ink = hex_rgb(v.get('ink')) or (31, 39, 34)
+    accent = hex_rgb(v.get('accent')) or (47, 93, 52)
+    fire = hex_rgb(v.get('fire')) or (168, 71, 12)
+    header = hex_rgb(v.get('header')) or (29, 35, 41)
+    fixed = []
+    ink, f1 = readable(ink, surface if lum(surface) < lum(bg) else bg)
+    link, f2 = readable(accent, surface if contrast(accent, surface) < contrast(accent, bg) else bg)
+    fire_t, f3 = readable(fire, bg)
+    if f1: fixed.append('text')
+    if f2: fixed.append('odkazy')
+    if f3: fixed.append('zvýraznění')
+    css = (':root, :root[data-theme] {\n'
+           f'  --bg: {to_hex(bg)}; --surface: {to_hex(surface)}; --ink: {to_hex(ink)};\n'
+           f'  --surface-2: color-mix(in srgb, {to_hex(surface)} 85%, {to_hex(ink)});\n'
+           f'  --muted: color-mix(in srgb, {to_hex(ink)} 78%, {to_hex(bg)});\n'
+           f'  --line: color-mix(in srgb, {to_hex(bg)} 75%, {to_hex(ink)});\n'
+           f'  --accent: {to_hex(accent)}; --accent-ink: {to_hex(best_ink(accent))}; --link: {to_hex(link)};\n'
+           f'  --fire: {to_hex(fire_t)}; --fire-ink: {to_hex(best_ink(fire_t))}; --header: {to_hex(header)}; --header-ink: {to_hex(best_ink(header))};\n'
+           f'  color-scheme: {"light" if lum(bg) > 0.18 else "dark"};\n'
+           '}\n')
+    if v.get('dark') == 'auto':
+        css = '@media (prefers-color-scheme: light) {\n' + css + '}\n'
+    out.write_text('/* Barvy z administrace (vygenerováno) */\n' + css, encoding='utf-8')
+    if fixed:
+        print('POZOR: barvy upraveny kvůli čitelnosti:', ', '.join(fixed))
 
 
 def free_port():
@@ -182,6 +300,7 @@ def render(entries):
         def fix(html):
             html = html.replace(local, SITE_URL)
             html = re.sub(r'zaznam\.php\?id=([\w-]+)', r'zaznam-\1.html', html)
+            html = re.sub(r'stranka\.php\?id=([\w-]+)', r'\1.html', html)
             html = html.replace('denik.php', 'denik.html').replace('o-mne.php', 'o-mne.html').replace('mista.php', 'mista.html')
             if PREVIEW:
                 html = html.replace('<head>', '<head>\n<meta name="robots" content="noindex, nofollow">', 1)
@@ -192,6 +311,8 @@ def render(entries):
         SITE.mkdir()
         pages = {'index.html': '/', 'denik.html': '/denik.php', 'mista.html': '/mista.php', 'o-mne.html': '/o-mne.php',
                  '404.html': '/zaznam.php?id=neexistuje'}
+        for p in json.loads((BUILD / 'data/stranky.json.php').read_text(encoding='utf-8')[len(GUARD):]):
+            pages[f'{p["id"]}.html'] = '/stranka.php?id=' + p['id']
         for e in entries:
             if e['published']:
                 pages[f'zaznam-{e["id"]}.html'] = '/zaznam.php?id=' + e['id']

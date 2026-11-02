@@ -50,14 +50,13 @@ collections:
       - name: places
         label: Místa
         widget: relation
-        collection: nastaveni
-        file: mista
-        value_field: "mista.*.name"
-        search_fields: ["mista.*.name"]
-        display_fields: ["mista.*.name"]
+        collection: mista
+        value_field: name
+        search_fields: [name]
+        display_fields: [name]
         multiple: true
         required: false
-        hint: Nové místo nejdřív přidejte v Nastavení → Místa.
+        hint: Nové místo nejdřív přidejte v sekci Místa.
       - name: text
         label: Text
         widget: markdown
@@ -77,6 +76,67 @@ collections:
       - { name: published, label: Zveřejnit na webu, widget: boolean, default: true }
       - { name: fb_count, label: Počet fotek na Facebooku, widget: number, value_type: int, required: false, default: 0, hint: "Když je fotek na Facebooku víc, web pod zápisem odkáže na Facebook." }
 
+  - name: mista
+    label: Místa
+    label_singular: Místo
+    description: Místa, která jde vybrat u zápisu. Zaškrtnutá místa („Zobrazit na úvodu“) mají zajímavost na úvodu a popis na stránce Místa (ideálně 4).
+    folder: content/mista
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{name}}"
+    identifier_field: name
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    view_filters:
+      - { label: Na úvodu, field: featured, pattern: true }
+    fields:
+      - { name: name, label: Název, widget: string }
+      - { name: featured, label: Zobrazit na úvodu a na stránce Místa, widget: boolean, default: false }
+      - { name: order, label: Pořadí, widget: number, value_type: int, default: 100, required: false, hint: "Menší číslo = dřív. Např. 10, 20, 30." }
+      - { name: kicker, label: Krátký štítek, widget: string, required: false, hint: "Např. Zřícenina hradu · 567 m n. m." }
+      - { name: text, label: Popis na stránce Místa, widget: text, required: false, hint: "Delší text o místě na stránce Místa." }
+      - { name: fact, label: Zajímavost na úvodu, widget: text, required: false, hint: "Krátká zajímavost do rámečku „Věděli jste?“ na úvodní stránce (1–2 věty). Když zůstane prázdná, použije se popis." }
+      - { name: image, label: Fotka, widget: image, required: false }
+
+  - name: stranky
+    label: Stránky
+    label_singular: Stránka
+    description: Vlastní stránky webu, např. Kontakt, Akce nebo Výbava. Každá může mít odkaz v hlavním menu.
+    folder: content/stranky
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{title}}"
+    identifier_field: title
+    summary: "{{title}}"
+    sortable_fields: [order, title]
+    fields:
+      - { name: title, label: Nadpis, widget: string, hint: "Z nadpisu vznikne i adresa stránky (např. Výbava → bctsurvival.cz/vybava.html). Adresa se při pozdější změně nadpisu nemění." }
+      - { name: published, label: Zveřejnit na webu, widget: boolean, default: true }
+      - { name: menu, label: Zobrazit v hlavním menu, widget: boolean, default: true }
+      - { name: menu_label, label: Název v menu, widget: string, required: false, hint: "Krátký název do menu (1–2 slova). Když zůstane prázdný, použije se nadpis." }
+      - { name: order, label: Pořadí v menu, widget: number, value_type: int, default: 50, required: false, hint: "Menší číslo = víc vlevo. Vlastní stránky jsou v menu za položkou O mně." }
+      - { name: description, label: Popis pro Google, widget: string, required: false, hint: "Jedna věta, co na stránce je. Ukáže se ve výsledcích vyhledávání." }
+      - name: text
+        label: Text
+        widget: markdown
+        required: false
+        buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list]
+        editor_components: []
+      - name: photos
+        label: Fotky
+        label_singular: fotku
+        widget: list
+        max: 12
+        required: false
+        hint: Fotky se ukážou pod textem. Velké fotky z mobilu se samy zmenší.
+        fields:
+          - { name: image, label: Fotka, widget: image }
+          - { name: caption, label: Popisek, widget: string, required: false, hint: "Co je na fotce (nepovinné)." }
+
   - name: nastaveni
     label: Nastavení
     files:
@@ -93,24 +153,50 @@ collections:
           - { name: email, label: E-mail, widget: string }
           - { name: facebook, label: Facebook, widget: string }
           - { name: since, label: Na Facebooku od roku, widget: string }
-      - name: mista
-        label: Místa
-        file: content/mista.json
+      - name: uvod
+        label: Úvodní stránka
+        file: content/uvod.json
         format: json
         fields:
-          - name: mista
-            label: Místa
-            label_singular: místo
-            widget: list
-            summary: "{{fields.name}}"
-            hint: "Místa, která jde vybrat u zápisu. U zaškrtnutých se na úvodu střídá zajímavost s fotkou a na stránce Místa je popis (ideálně 4 místa)."
+          - { name: hero_kicker, label: Malý nápis nad názvem webu, widget: string, required: false }
+          - { name: summary, label: Odstavec pod úvodem, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [], hint: "Krátké shrnutí, co na webu je. Čte ho i Google. Prázdné = odstavec se nezobrazí." }
+          - { name: latest_title, label: Nadpis nejnovějších zápisů, widget: string, required: false }
+          - { name: latest_count, label: Počet nejnovějších zápisů, widget: select, options: [{ label: "4", value: 4 }, { label: "8", value: 8 }, { label: "12", value: 12 }], default: 4, hint: "Násobky 4, aby byly řádky plné." }
+          - { name: places_title, label: Nadpis seznamu míst, widget: string, required: false }
+          - name: funfact
+            label: Rámeček „Věděli jste?“
+            widget: object
+            collapsed: false
+            hint: Zajímavosti se berou z míst, která mají zaškrtnuto „Zobrazit na úvodu“.
             fields:
-              - { name: name, label: Název, widget: string }
-              - { name: featured, label: Zobrazit na úvodu, widget: boolean, default: false }
-              - { name: kicker, label: Krátký štítek, widget: string, required: false, hint: "Např. Zřícenina hradu · 567 m n. m." }
-              - { name: text, label: Popis na stránce Místa, widget: text, required: false, hint: "Delší text o místě na stránce Místa." }
-              - { name: fact, label: Zajímavost na úvodu, widget: text, required: false, hint: "Krátká zajímavost do rámečku „Věděli jste?“ na úvodní stránce (1–2 věty). Když zůstane prázdná, použije se popis." }
-              - { name: image, label: Fotka, widget: image, required: false }
+              - { name: enabled, label: Zobrazit rámeček, widget: boolean, default: true }
+              - { name: title, label: Nadpis rámečku, widget: string, default: "Věděli jste?" }
+              - { name: button, label: Tlačítko Další zajímavost, widget: boolean, default: true }
+              - { name: auto, label: Střídat zajímavosti automaticky, widget: boolean, default: true }
+              - { name: seconds, label: Rychlost střídání (sekundy), widget: number, value_type: int, default: 30, min: 5, max: 600, hint: "Po kolika sekundách se ukáže další zajímavost. Doporučeno 20–60. Když na rámečku je myš, střídání se zastaví." }
+          - { name: about_title, label: Nadpis sekce o autorovi, widget: string, required: false }
+          - { name: about_text, label: Text sekce o autorovi, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
+          - { name: contact_title, label: Nadpis kontaktu, widget: string, required: false }
+          - { name: contact_text, label: Text pod e-mailem, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
+      - name: vzhled
+        label: Barvy webu
+        file: content/vzhled.json
+        format: json
+        fields:
+          - { name: custom, label: Použít vlastní barvy, widget: boolean, default: false, hint: "Vypnuto = původní barvy webu. Když by text byl na zvoleném pozadí špatně čitelný, web barvu textu nebo odkazů sám trochu ztmaví nebo zesvětlí." }
+          - name: dark
+            label: Tmavý režim
+            widget: select
+            default: auto
+            options:
+              - { label: "Podle zařízení – v tmavém režimu původní tmavé barvy", value: auto }
+              - { label: "Vždy moje barvy", value: off }
+          - { name: bg, label: Pozadí stránky, widget: color, required: false, default: "#f5eee2" }
+          - { name: surface, label: Pozadí karet a rámečků, widget: color, required: false, default: "#fffaf1" }
+          - { name: ink, label: Barva textu, widget: color, required: false, default: "#1f2722" }
+          - { name: accent, label: Tlačítka a odkazy, widget: color, required: false, default: "#2f5d34" }
+          - { name: fire, label: "Zvýraznění (štítky, rámeček Věděli jste?)", widget: color, required: false, default: "#a8470c" }
+          - { name: header, label: Hlavička a patička, widget: color, required: false, default: "#1d2329" }
       - name: pratele
         label: Spřátelené weby (loga dole)
         file: content/pratele.json
