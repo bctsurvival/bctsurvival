@@ -80,7 +80,8 @@ collections:
           - { name: image, label: Fotka, widget: image }
           - { name: caption, label: Popisek, widget: string, required: false, hint: "Co je na fotce (nepovinné)." }
       - { name: published, label: Zveřejnit na webu, widget: boolean, default: true }
-      - { name: fb_count, label: Počet fotek na Facebooku, widget: number, value_type: int, required: false, default: 0, hint: "Když je fotek na Facebooku víc, web pod zápisem odkáže na Facebook." }
+      - { name: fb_count, label: Počet fotek na Facebooku, widget: number, value_type: int, required: false, default: 0, hint: "Když je fotek na Facebooku víc než na webu, ukáže se pod zápisem odkaz na další fotky." }
+      - { name: fb_url, label: Odkaz na album s fotkami, widget: string, required: false, hint: "Celá adresa alba (nebo jiné stránky) včetně https:// – na Facebooku otevřete album a zkopírujte adresu z prohlížeče. Když zůstane prázdné, odkaz vede na hlavní stránku BCT Survival na Facebooku." }
 
   - name: mista
     label: Místa

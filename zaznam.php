@@ -112,8 +112,14 @@ page_head([
       <?= $e['text'] !== '' ? format_text($e['text']) : '<p class="muted">K tomuto záznamu zatím není text, jen fotky.</p>' ?>
     </div>
 
-    <?php if (($e['fb_count'] ?? 0) > count($e['photos'])): ?>
+    <?php $fbUrl = $e['fb_url'] ?? ''; if (($e['fb_count'] ?? 0) > count($e['photos'])): ?>
+    <?php if ($fbUrl !== ''): ?>
+    <p class="muted more-photos">Na webu jsou vybrané fotky. Všech <?= (int)$e['fb_count'] ?> fotek z této potulky najdete v <a href="<?= e($fbUrl) ?>" rel="noopener">albu na Facebooku</a>.</p>
+    <?php else: ?>
     <p class="muted more-photos">Na webu jsou vybrané fotky. Všech <?= (int)$e['fb_count'] ?> fotek z této potulky najdete na <a href="<?= e($s['facebook']) ?>" rel="noopener">Facebooku BCT Survival</a>.</p>
+    <?php endif; ?>
+    <?php elseif ($fbUrl !== ''): ?>
+    <p class="muted more-photos">Další fotky najdete v <a href="<?= e($fbUrl) ?>" rel="noopener">albu na Facebooku</a>.</p>
     <?php endif; ?>
 
     <nav class="pager" aria-label="Další záznamy">

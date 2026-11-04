@@ -123,6 +123,7 @@ def prepare():
             'text': (e.get('text') or '').strip(),
             'photos': photos,
             'fb_count': int(e.get('fb_count') or 0),
+            'fb_url': (e.get('fb_url') or '').strip(),
             'published': e.get('published', True) is not False,
             'updated': last_change(f) or str(e.get('date', ''))[:10],
         })
