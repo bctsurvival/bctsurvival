@@ -8,19 +8,19 @@
   "text": "",
   "photos": [
     {
-      "image": "/foto/2025-04-05-s-prvnaky-na-mechovy-vrch/1.jpg",
-      "caption": ""
-    },
-    {
       "image": "/foto/2025-04-05-s-prvnaky-na-mechovy-vrch/2.jpg",
       "caption": "Kávička z outinu nesmí chybět"
+    },
+    {
+      "image": "/foto/2025-04-05-s-prvnaky-na-mechovy-vrch/1.jpg",
+      "caption": ""
     },
     {
       "image": "/foto/2025-04-05-s-prvnaky-na-mechovy-vrch/3.jpg",
       "caption": "Mechový vrch"
     }
   ],
+  "published": true,
   "fb_count": 20,
-  "fb_url": "https://www.facebook.com/media/set/?set=a.1011473494504407",
-  "published": true
+  "fb_url": "https://www.facebook.com/media/set/?set=a.1011473494504407"
 }
