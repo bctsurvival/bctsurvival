@@ -3,10 +3,17 @@
   "date": "2025-06-22",
   "type": "pochod",
   "places": [
-    "Starý Plzenec"
+    "Starý Plzenec",
+    "Radyně",
+    "Rotunda svatého Petra a Pavla",
+    "Úslava"
   ],
   "text": "",
   "photos": [
+    {
+      "image": "/foto/nahrane/20261107_221325.jpg",
+      "caption": ""
+    },
     {
       "image": "/foto/2025-06-22-kolem-stareho-plzence/1.jpg",
       "caption": "Výhled na Starý Plzenec"
@@ -14,13 +21,9 @@
     {
       "image": "/foto/2025-06-22-kolem-stareho-plzence/2.jpg",
       "caption": "Řeka Úslava - Starý Plzenec"
-    },
-    {
-      "image": "/foto/2025-06-22-kolem-stareho-plzence/3.jpg",
-      "caption": "Radyně"
     }
   ],
+  "published": true,
   "fb_count": 21,
-  "fb_url": "https://www.facebook.com/media/set/?set=a.1068476898804066",
-  "published": true
+  "fb_url": "https://www.facebook.com/media/set/?set=a.1068476898804066"
 }
