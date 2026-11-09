@@ -37,22 +37,28 @@ collections:
     sortable_fields: [date, title]
     view_filters:
       - { label: Potulky, field: type, pattern: potulka }
-      - { label: Recenze, field: type, pattern: recenze }
       - { label: Skryté, field: published, pattern: false }
     fields:
       - { name: title, label: Název, widget: string }
       - { name: date, label: Datum, widget: datetime, time_format: false, date_format: "D. M. YYYY", format: "YYYY-MM-DD" }
       - name: type
         label: Druh
-        widget: select
+        widget: relation
+        collection: druhy
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
         default: potulka
-        options:
-          - { label: Potulka, value: potulka }
-          - { label: Pochod a putování, value: pochod }
-          - { label: Recenze a výbava, value: recenze }
-          - { label: Geocaching, value: geocaching }
-          - { label: Místo, value: misto }
-          - { label: Akce, value: akce }
+        hint: Nový druh přidáte v sekci Druhy zápisů.
+      - name: type2
+        label: Druhý druh (nepovinné)
+        widget: relation
+        collection: druhy
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+        hint: Např. Potulka + Geocaching. Na kartičce se ukážou oba štítky vedle sebe.
       - name: places
         label: Místa
         widget: relation
@@ -82,6 +88,25 @@ collections:
       - { name: published, label: Zveřejnit na webu, widget: boolean, default: true }
       - { name: fb_count, label: Počet fotek na Facebooku, widget: number, value_type: int, required: false, default: 0, hint: "Když je fotek na Facebooku víc než na webu, ukáže se pod zápisem odkaz na další fotky." }
       - { name: fb_url, label: Odkaz na album s fotkami, widget: string, required: false, hint: "Celá adresa alba (nebo jiné stránky) včetně https:// – na Facebooku otevřete album a zkopírujte adresu z prohlížeče. Když zůstane prázdné, odkaz vede na hlavní stránku BCT Survival na Facebooku." }
+
+  - name: druhy
+    label: Druhy zápisů
+    label_singular: Druh
+    description: Druhy, které jde vybrat u zápisu (Potulka, Geocaching…). Každý má vlastní barvu štítku a filtr v deníku.
+    folder: content/druhy
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{name}}"
+    identifier_field: name
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: Název, widget: string, hint: "Jednotné číslo, např. Houby, Výstava, Vlastivědná procházka. Ukáže se na štítku." }
+      - { name: plural, label: Název ve filtru deníku, widget: string, required: false, hint: "Např. Výstavy. Když zůstane prázdné, použije se název." }
+      - { name: color, label: Barva štítku, widget: color, default: "#2f5d34", hint: "Text na štítku je bílý. Příliš světlou barvu web sám ztmaví, aby byl štítek čitelný." }
+      - { name: order, label: Pořadí ve filtru, widget: number, value_type: int, default: 100, required: false, hint: "Menší číslo = víc vlevo." }
 
   - name: mista
     label: Místa

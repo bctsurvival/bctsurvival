@@ -17,7 +17,7 @@
     var q = norm((data.get('q') || '').trim());
     var shown = 0;
     cards.forEach(function (c) {
-      var ok = (!typ || c.dataset.type === typ)
+      var ok = (!typ || c.dataset.type.split(' ').indexOf(typ) !== -1)
         && (!misto || c.dataset.places.split('|').indexOf(misto) !== -1)
         && (!rok || c.dataset.year === rok)
         && (!q || c.dataset.search.indexOf(q) !== -1);

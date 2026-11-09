@@ -119,6 +119,7 @@ def prepare():
             'date': str(e.get('date', ''))[:10],
             'title': (e.get('title') or eid).strip(),
             'type': e.get('type') or 'potulka',
+            'types': list(dict.fromkeys(t for t in [e.get('type') or 'potulka', e.get('type2') or ''] if t)),
             'places': [x for x in (e.get('places') or []) if x],
             'text': (e.get('text') or '').strip(),
             'photos': photos,
@@ -191,6 +192,7 @@ def prepare():
     write_data('stranky', pages)
 
     write_theme()
+    write_druhy()
 
     for msg in problems:
         print('POZOR:', msg)
@@ -277,6 +279,25 @@ def write_theme():
     out.write_text('/* Barvy z administrace (vygenerováno) */\n' + css, encoding='utf-8')
     if fixed:
         print('POZOR: barvy upraveny kvůli čitelnosti:', ', '.join(fixed))
+
+
+def write_druhy():
+    """Druhy zápisů z administrace (content/druhy) -> data/druhy + css/druhy.css (barvy štítků)."""
+    druhy = []
+    for f in sorted((ROOT / 'content/druhy').glob('*.json')):
+        d = json.loads(f.read_text(encoding='utf-8'))
+        name = (d.get('name') or f.stem).strip()
+        druhy.append({'key': f.stem, 'label': name, 'plural': (d.get('plural') or '').strip() or name,
+                      'color': d.get('color') or '#2f5d34', 'order': int(d.get('order') or 100)})
+    druhy.sort(key=lambda x: (x['order'], x['label']))
+    write_data('druhy', druhy)
+    css = '/* Barvy štítků druhů (vygenerováno z administrace) */\n'
+    for d in druhy:
+        c = hex_rgb(d['color']) or (47, 93, 52)
+        c, _ = readable(c, (255, 255, 255))  # bílý text na štítku musí být čitelný
+        k = re.sub(r'[^a-zA-Z0-9_-]', '', d['key'])
+        css += f'.type-{k}, .tab-{k} {{ --tab: {to_hex(c)}; }}\n'
+    (BUILD / 'css/druhy.css').write_text(css, encoding='utf-8')
 
 
 def free_port():

@@ -26,13 +26,15 @@ $newer = $all[$idx - 1] ?? null;
 $older = $all[$idx + 1] ?? null;
 $places = $e['places'] ?? [];
 $label = type_label($e['type']);
+$types = entry_types($e);
+$isReview = in_array('recenze', $types, true);
 $desc = $e['text'] !== '' ? excerpt($e['text'], 158)
     : $label . ' z ' . date_cz($e['date']) . ($places ? ' – ' . implode(', ', $places) : '') . '.';
 $img = $e['photos'] ? photo_url($e, $e['photos'][0], false, true) : null;
 
 $ld = [
     '@context' => 'https://schema.org',
-    '@type' => $e['type'] === 'recenze' ? 'Review' : 'BlogPosting',
+    '@type' => $isReview ? 'Review' : 'BlogPosting',
     'headline' => $e['title'],
     'datePublished' => $e['date'],
     'dateModified' => substr($e['updated'] ?? $e['date'], 0, 10),
@@ -44,7 +46,7 @@ $ld = [
     'description' => $desc,
     'articleSection' => $label,
 ];
-if ($e['type'] === 'recenze') {
+if ($isReview) {
     $ld['itemReviewed'] = ['@type' => 'Thing', 'name' => $e['title']];
     $ld['name'] = $e['title'];
     unset($ld['headline'], $ld['articleSection'], $ld['mainEntityOfPage'], $ld['dateModified'], $ld['publisher']);
@@ -53,7 +55,7 @@ if ($e['photos']) {
     $ld['image'] = array_map(fn($p) => photo_url($e, $p, false, true), $e['photos']);
 }
 if ($places) {
-    $ld[$e['type'] === 'recenze' ? 'locationCreated' : 'contentLocation'] = array_map(
+    $ld[$isReview ? 'locationCreated' : 'contentLocation'] = array_map(
         fn($p) => ['@type' => 'Place', 'name' => $p . ($p === 'Radyně' ? ' (hrad u Starého Plzence)' : ''), 'address' => ['@type' => 'PostalAddress', 'addressCountry' => 'CZ']],
         $places
     );
@@ -83,11 +85,13 @@ page_head([
   <div class="wrap narrow">
     <nav class="crumbs" aria-label="Drobečková navigace"><a href="./">Úvod</a> <span aria-hidden="true">›</span> <a href="denik.php">Deník</a> <span aria-hidden="true">›</span> <?= e($e['title']) ?></nav>
     <header class="entry-head">
-      <p class="card-tab tab-<?= e($e['type']) ?>"><?= e($label) ?></p>
+      <p class="card-tabs"><?php foreach ($types as $t): ?><span class="card-tab tab-<?= e($t) ?>"><?= e(type_label($t)) ?></span><?php endforeach; ?></p>
       <h1><?= e($e['title']) ?></h1>
       <p class="entry-meta"><time datetime="<?= e($e['date']) ?>"><?= e(date_cz($e['date'])) ?></time> · <?= e($s['nickname']) ?></p>
       <ul class="chips small" aria-label="Druh a místa">
-        <li><a class="chip" href="denik.php?typ=<?= e($e['type']) ?>">Všechny: <?= e(mb_strtolower(TYPES_PLURAL[$e['type']] ?? $label)) ?></a></li>
+        <?php foreach ($types as $t): ?>
+        <li><a class="chip" href="denik.php?typ=<?= e($t) ?>">Všechny: <?= e(mb_strtolower(type_plural($t), 'UTF-8')) ?></a></li>
+        <?php endforeach; ?>
         <?php foreach ($places as $p): ?>
         <li><a class="chip" href="denik.php?misto=<?= e(rawurlencode($p)) ?>"><?= e($p) ?></a></li>
         <?php endforeach; ?>

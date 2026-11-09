@@ -41,6 +41,9 @@ function page_head(array $o): void
 <link rel="icon" href="img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="img/logo-180.png">
 <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
+<?php if (is_file(APP_ROOT . '/css/druhy.css')): ?>
+<link rel="stylesheet" href="<?= e(asset('css/druhy.css')) ?>">
+<?php endif; ?>
 <?php if (is_file(APP_ROOT . '/css/vzhled.css')): ?>
 <link rel="stylesheet" href="<?= e(asset('css/vzhled.css')) ?>">
 <?php endif; ?>
@@ -117,7 +120,7 @@ function entry_card(array $e, bool $hidden = false, string $heading = 'h3'): voi
     $search = mb_strtolower($e['title'] . ' ' . implode(' ', $places) . ' ' . $e['text'], 'UTF-8');
     ?>
 <li class="card type-<?= e($e['type']) ?>"<?= $hidden ? ' hidden' : '' ?>
-    data-type="<?= e($e['type']) ?>" data-year="<?= e(substr($e['date'], 0, 4)) ?>"
+    data-type="<?= e(implode(' ', entry_types($e))) ?>" data-year="<?= e(substr($e['date'], 0, 4)) ?>"
     data-places="<?= e(implode('|', $places)) ?>" data-search="<?= e((string)preg_replace('~\s+~u', ' ', $search)) ?>">
   <article>
     <a class="card-link" href="<?= e(entry_url($e)) ?>">
@@ -127,7 +130,7 @@ function entry_card(array $e, bool $hidden = false, string $heading = 'h3'): voi
         <?php endif; ?>
       </div>
       <div class="card-body">
-        <p class="card-tab"><?= e(type_label($e['type'])) ?></p>
+        <p class="card-tabs"><?php foreach (entry_types($e) as $t): ?><span class="card-tab tab-<?= e($t) ?>"><?= e(type_label($t)) ?></span><?php endforeach; ?></p>
         <<?= $heading ?> class="card-title"><?= e($e['title']) ?></<?= $heading ?>>
         <p class="card-meta"><time datetime="<?= e($e['date']) ?>"><?= e(date_cz($e['date'])) ?></time><?php if ($places): ?> · <?= e(implode(', ', array_slice($places, 0, 3))) ?><?php endif; ?></p>
       </div>

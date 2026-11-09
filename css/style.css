@@ -161,6 +161,8 @@ p { margin: 0 0 1em; }
   font: 700 13px/1.6 var(--sans); letter-spacing: .04em; text-transform: uppercase;
   background: var(--tab, #2f5d34); color: #fff;
 }
+.card-tabs { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; margin: 0 0 8px; }
+.card-tabs .card-tab { margin: 0; }
 .card-title { font-size: 1.15rem; margin: 0 0 6px; }
 .card-meta { font-size: 15px; color: var(--muted); margin: 0; }
 .type-potulka, .tab-potulka { --tab: #2f5d34; }
@@ -333,3 +335,4 @@ select, input[type="search"], input[type="text"], input[type="email"], input[typ
 .page-gallery figure { margin: 0; }
 .page-gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
 .page-gallery figcaption { font-size: 15px; color: var(--muted); margin-top: 6px; }
+.entry-head .card-tabs { justify-content: flex-start; }

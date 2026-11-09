@@ -8,15 +8,20 @@ $all = entries();
 $base = site_url();
 $places = places_count($all);
 $years = array_values(array_unique(array_map(fn($e) => substr($e['date'], 0, 4), $all)));
-$counts = array_count_values(array_column($all, 'type'));
+$counts = [];
+foreach ($all as $e) {
+    foreach (entry_types($e) as $t) {
+        $counts[$t] = ($counts[$t] ?? 0) + 1;
+    }
+}
 
-$typ = isset(TYPES[$_GET['typ'] ?? '']) ? $_GET['typ'] : '';
+$typ = isset(druhy()[$_GET['typ'] ?? '']) ? $_GET['typ'] : '';
 $misto = isset($places[$_GET['misto'] ?? '']) ? $_GET['misto'] : '';
 $rok = in_array($_GET['rok'] ?? '', $years, true) ? $_GET['rok'] : '';
 $q = trim(mb_substr((string)($_GET['q'] ?? ''), 0, 80));
 
 $match = function (array $e) use ($typ, $misto, $rok, $q): bool {
-    if ($typ && $e['type'] !== $typ) return false;
+    if ($typ && !in_array($typ, entry_types($e), true)) return false;
     if ($misto && !in_array($misto, $e['places'] ?? [], true)) return false;
     if ($rok && substr($e['date'], 0, 4) !== $rok) return false;
     if ($q !== '') {
@@ -29,7 +34,7 @@ $shown = count(array_filter($all, $match));
 
 $heading = 'Deník';
 $bits = [];
-if ($typ) $bits[] = mb_strtolower(TYPES_PLURAL[$typ], 'UTF-8');
+if ($typ) $bits[] = mb_strtolower(type_plural($typ), 'UTF-8');
 if ($misto) $bits[] = $misto;
 if ($rok) $bits[] = $rok;
 $title = ($bits ? 'Deník: ' . implode(', ', $bits) : 'Deník potulek, pochodů a recenzí') . ' | ' . $s['site_name'];
@@ -78,7 +83,7 @@ page_head([
     <fieldset class="types">
       <legend>Druh záznamu</legend>
       <label class="type-pill"><input type="radio" name="typ" value=""<?= $typ === '' ? ' checked' : '' ?>><span>Vše <span class="n"><?= count($all) ?></span></span></label>
-      <?php foreach (TYPES_PLURAL as $k => $label): if (empty($counts[$k])) continue; ?>
+      <?php foreach (druhy() as $k => $d): if (empty($counts[$k])) continue; $label = $d['plural']; ?>
       <label class="type-pill type-<?= e($k) ?>"><input type="radio" name="typ" value="<?= e($k) ?>"<?= $typ === $k ? ' checked' : '' ?>><span><?= e($label) ?> <span class="n"><?= (int)$counts[$k] ?></span></span></label>
       <?php endforeach; ?>
     </fieldset>

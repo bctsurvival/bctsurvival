@@ -18,24 +18,6 @@ const PHOTO_SMALL = 480;       // delší strana náhledu (px)
 // ani na hostingu, který neumí .htaccess.
 const DATA_GUARD = "<?php exit; ?>\n";
 
-const TYPES = [
-    'potulka'    => 'Potulka',
-    'pochod'     => 'Pochod a putování',
-    'recenze'    => 'Recenze a výbava',
-    'geocaching' => 'Geocaching',
-    'misto'      => 'Místo',
-    'akce'       => 'Akce',
-];
-
-const TYPES_PLURAL = [
-    'potulka'    => 'Potulky',
-    'pochod'     => 'Pochody a putování',
-    'recenze'    => 'Recenze a výbava',
-    'geocaching' => 'Geocaching',
-    'misto'      => 'Místa',
-    'akce'       => 'Akce',
-];
-
 const CZ_MONTHS = ['', 'ledna', 'února', 'března', 'dubna', 'května', 'června',
     'července', 'srpna', 'září', 'října', 'listopadu', 'prosince'];
 
@@ -199,9 +181,33 @@ function date_cz(string $iso, bool $long = true): string
     return $long ? "$d. " . CZ_MONTHS[$m] . " $y" : "$d. $m. $y";
 }
 
+/** Druhy zápisů z administrace: klíč => ['label' => …, 'plural' => …]. */
+function druhy(): array
+{
+    static $d = null;
+    if ($d === null) {
+        $d = [];
+        foreach (data_read('druhy', []) as $x) {
+            $d[$x['key']] = $x;
+        }
+    }
+    return $d;
+}
+
 function type_label(string $t): string
 {
-    return TYPES[$t] ?? 'Záznam';
+    return druhy()[$t]['label'] ?? 'Záznam';
+}
+
+function type_plural(string $t): string
+{
+    return druhy()[$t]['plural'] ?? type_label($t);
+}
+
+/** Druhy zápisu (nejvýš dva). */
+function entry_types(array $e): array
+{
+    return $e['types'] ?? [$e['type']];
 }
 
 /** Kořenová adresa webu bez lomítka na konci, např. https://bct.wz.cz */
@@ -339,7 +345,9 @@ function regen_static(): void
 
     $byType = [];
     foreach ($list as $e) {
-        $byType[$e['type']][] = $e;
+        foreach (entry_types($e) as $t) {
+            $byType[$t][] = $e;
+        }
     }
     $places = array_slice(array_keys(places_count($list)), 0, 12);
     $t = "# {$s['site_name']}\n\n"
@@ -359,7 +367,8 @@ function regen_static(): void
     foreach (stranky() as $p) {
         $t .= "- [{$p['title']}]($base/stranka.php?id={$p['id']})" . ($p['description'] ? ': ' . $p['description'] : '') . "\n";
     }
-    foreach (TYPES_PLURAL as $k => $label) {
+    foreach (druhy() as $k => $d) {
+        $label = $d['plural'];
         if (empty($byType[$k])) {
             continue;
         }
