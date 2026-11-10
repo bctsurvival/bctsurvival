@@ -1,6 +1,6 @@
 {
   "hero_kicker": "Outdoorový deník od roku 2015",
-  "summary": "**BCT Survival** je kronika lesních potulek, pochodů, geocachingu, houbaření a outdoorového vybavení, kterou od roku 2015 píše Petr alias Mnich. Nejčastěji se toulá lesy kolem Starého Plzence a Radyně, ale vyráží i na Toužimsko, do Skoků a za dalšími zajímavými místy západních Čech. Každá výprava má svůj příběh, fotografie a kus poctivě prošlapané cesty.",
+  "summary": "**BCT Survival** je kronika lesních potulek, pochodů, geocachingu, houbaření a outdoorového vybavení, kterou od roku 2015 píše Petr alias Mnich. Nejčastěji se toulám lesy kolem Starého Plzence a Radyně, ale vyrážím i na Toužimsko, do Skoků a za dalšími zajímavými místy západních Čech. Každá výprava má svůj příběh, fotografie a kus poctivě prošlapané cesty.",
   "latest_title": "Nejnovější záznamy",
   "latest_count": 4,
   "places_title": "Kam chodím nejčastěji",
@@ -11,7 +11,7 @@
     "auto": true,
     "seconds": 30
   },
-  "about_title": "Kdo píše",
+  "about_title": "Pár slov o mně",
   "about_text": "Jmenuji se Petr, mezi geokačery a kamarády spíš známý jako Mnich. Od srpna 2025 vyrážím každý týden alespoň jednou do lesa. S batohem na zádech hledám klid, houby, kešky i zajímavá místa a své výpravy pak zachycuji v zápiscích, fotografiích a recenzích vybavení, které mě na cestách doprovází.",
   "contact_title": "Napište mi",
   "contact_text": "Novinky z každé potulky najdete i na [Facebooku](https://www.facebook.com/BCTSurvival)."
