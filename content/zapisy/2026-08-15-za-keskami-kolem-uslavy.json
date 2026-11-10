@@ -1,7 +1,8 @@
 {
   "title": "Za keškami kolem Úslavy",
   "date": "2026-08-15",
-  "type": "geocaching",
+  "type": "potulka",
+  "type2": "geocaching",
   "places": [
     "Starý Plzenec",
     "Úslava"
