@@ -2,11 +2,16 @@
   "title": "Opět do Zaječí rokle",
   "date": "2025-05-24",
   "type": "potulka",
+  "type2": "",
   "places": [
     "Zaječí rokle"
   ],
   "text": "",
   "photos": [
+    {
+      "image": "/foto/nahrane/20250524_223706.jpg",
+      "caption": ""
+    },
     {
       "image": "/foto/2025-05-24-opet-do-zajeci-rokle/1.jpg",
       "caption": ""
@@ -14,13 +19,9 @@
     {
       "image": "/foto/2025-05-24-opet-do-zajeci-rokle/2.jpg",
       "caption": ""
-    },
-    {
-      "image": "/foto/2025-05-24-opet-do-zajeci-rokle/3.jpg",
-      "caption": ""
     }
   ],
+  "published": true,
   "fb_count": 15,
-  "fb_url": "https://www.facebook.com/media/set/?set=a.1047504530901303",
-  "published": true
+  "fb_url": "https://www.facebook.com/media/set/?set=a.1047504530901303"
 }
