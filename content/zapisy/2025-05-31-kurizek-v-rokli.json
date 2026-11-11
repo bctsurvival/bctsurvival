@@ -2,23 +2,26 @@
   "title": "Kuřízek v rokli",
   "date": "2025-05-31",
   "type": "potulka",
-  "places": [],
+  "type2": "",
+  "places": [
+    "Zaječí rokle"
+  ],
   "text": "",
   "photos": [
     {
-      "image": "/foto/2025-05-31-kurizek-v-rokli/1.jpg",
+      "image": "/foto/nahrane/20250531_181242.jpg",
       "caption": ""
     },
     {
-      "image": "/foto/2025-05-31-kurizek-v-rokli/2.jpg",
+      "image": "/foto/nahrane/20250531_142836.jpg",
       "caption": ""
     },
     {
-      "image": "/foto/2025-05-31-kurizek-v-rokli/3.jpg",
+      "image": "/foto/nahrane/20250531_151107.jpg",
       "caption": ""
     }
   ],
+  "published": true,
   "fb_count": 16,
-  "fb_url": "https://www.facebook.com/media/set/?set=a.1052553217063101",
-  "published": true
+  "fb_url": "https://www.facebook.com/media/set/?set=a.1052553217063101"
 }
