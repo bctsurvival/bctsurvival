@@ -1,9 +1,9 @@
 {
-  "name": "Výrovna",
+  "name": "Na Výrovně",
+  "featured": true,
   "order": 150,
-  "featured": false,
-  "kicker": "",
-  "text": "",
-  "fact": "",
-  "image": ""
+  "kicker": "Kulturní pamětihodnost • Zaniklé lesní divadlo a amfiteátr",
+  "text": "Zapomenuté a tajuplné Přírodní divadlo Na Výrovně se ukrývá v lesním svahu pod hradem Radyně, nedaleko horního plzeneckého náměstí. Areál byl vybudován plzeneckými ochotníky v první polovině 50. let 20. století na místě bývalé lesní restaurace a slavnostně otevřen v roce 1956. Ve své době šlo o mimořádně moderní amfiteátr s vyvýšeným jevištěm, šatnami, hudebním pavilonem a svahovým hledištěm, které dokázalo pojmout až 1 200 diváků. Divadlo bylo srdcem kulturního života celého Plzeňska, pořádal se zde slavný letní festival Léto pod Radyní a vystupovaly tu tehdejší největší hvězdy jako Waldemar Matuška, Jiří Suchý nebo Orchestr Karla Vlacha. S nástupem televizního vysílání a vlivem společenských změn po roce 1970 však zájem opadl, areál začal pustnout a poslední velký koncert se zde odehrál v roce 1976. Dnes je toto místo zarostlé lesem a z původní slávy zbývají jen betonové základy, zbytky zdí a schodů amfiteátru, které mají jedinečnou nostalgickou atmosféru.",
+  "fact": "V lesním amfiteátru Na Výrovně tleskalo slavným umělcům až 1 200 diváků najednou. Dnes už zbyly jen zarostlé betonové schody uprostřed tichého lesa, které ale stále lákají milovníky opuštěných míst s bohatou historií.",
+  "image": "/foto/nahrane/20260801_103628.jpg"
 }
