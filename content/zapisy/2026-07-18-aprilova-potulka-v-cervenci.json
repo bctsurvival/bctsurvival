@@ -1,7 +1,8 @@
 {
   "title": "Aprílová potulka v červenci",
   "date": "2026-07-18",
-  "type": "geocaching",
+  "type": "potulka",
+  "type2": "geocaching",
   "places": [
     "Radyně",
     "Skalní stezka",
