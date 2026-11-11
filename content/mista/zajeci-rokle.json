@@ -1,9 +1,9 @@
 {
   "name": "Zaječí rokle",
-  "order": 30,
   "featured": true,
-  "kicker": "Méně známé místo pod Radyní",
-  "text": "Tichá rokle se skalami v lesích pod Radyní, kdysi trampský camp. Na internetu o ní skoro nic nenajdete, o to častěji se objevuje v deníku: Mnich sem chodí vařit obědy, kontroluje tu kešku a odnáší odpadky, které tu po sobě nechali jiní.",
-  "fact": "Na stromě v rokli dodnes visí vlaječka „Trampský camp Zaječí rokle“, památka na časy, kdy tu tábořili trampové.",
-  "image": "/img/mista/zajeci-rokle.jpg"
+  "order": 30,
+  "kicker": "• Přírodní zákoutí • Skrytá lesní rokle a zaniklý trampský camp",
+  "text": "Tichá a skrytá rokle se skalami v lesích mezi Plzní a Starým Plzencem, kde se kdysi nacházel trampský camp zvaný Zaječí rokle. Místo s jedinečnou atmosférou starých časů vzniklo už v létě roku 1951, kdy zde skupina mladých trampů objevila hlubokou strž mezi borovicemi. Na internetu o této zapomenuté rokli skoro nic nenajdete, o to častěji se však objevuje v mém osobním deníku. Rád sem chodím vařit obědy v přírodě, kontroluji zde svou ukrytou kešku a bohužel pravidelně odnáším i odpadky, které tu po sobě nechali jiní. Dnes už přístřešky z větví a staré ohniště dávno pohltil mech a les, ale duch tohoto tichého útočiště tu zůstává dál.",
+  "fact": "Jak Zaječí rokle přišla ke svému jménu? Podle trampské legendy z roku 1951 byla tahle lesní strž mezi skalami tak hluboká, že se v ní ztratil i mazaný zajíc, který zakladatelům campu ukradl chleba přímo z ešusu – a po tomto zlodějíčkovi pak trampové pojmenovali i svůj hlavní stan „Ušák“.",
+  "image": "/foto/nahrane/20260509_105440.jpg"
 }
