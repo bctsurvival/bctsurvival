@@ -1,9 +1,9 @@
 {
   "name": "Radyně",
-  "order": 10,
   "featured": true,
-  "kicker": "Zřícenina hradu · 567 m n. m.",
-  "text": "Hrad nad Starým Plzencem, který má BCT Survival i v logu. Stavět ho začal Karel IV. kolem roku 1353 a původně se jmenoval Karlskrone, tedy Karlova koruna. Pozor na záměnu: vesnice Radyně u Toužimi, kudy vede putování do Skoků, je úplně jiné místo.",
-  "fact": "Na vyhlídku hradní věže vede 114 schodů. Roku 1885 po nich vystoupal i císař František Josef I., aby odtud sledoval vojenské manévry v okolí.",
-  "image": "/img/mista/radyne.jpg"
+  "order": 10,
+  "kicker": "Kulturní památka • Gotická hradní zřícenina (výška 567 m n. m.)",
+  "text": "Zřícenina královského hradu Radyně tvoří nepřehlédnutelnou dominantu celého Plzeňska. Hrad nechal postavit v letech 1356–1361 císař Karel IV. jako strážní pevnost k ochraně obchodních stezek vedoucích do Bavorska. Původní panovníkův název Karlskrone (Karlova koruna) se však neujal a hrad získal jméno podle vrchu, na němž stojí. Architektonicky se jedná o pokrokový typ hradu, kde obytný palác i dvě věže tvořily jeden stavební celek. V polovině 16. století hrad vyhořel a zpustl. Dnes je zřícenina v majetku města Starý Plzenec, které hrad zpřístupnilo. Návštěvníci mohou vystoupat na 22 metrů vysokou hradní věž se skvělým výhledem, uvnitř které se nachází stálá historická a pohádková expozice. Kolem hradu prochází oblíbená Skalní naučná stezka",
+  "fact": "K Radyni se váže pověst o strašlivém rytíři Radoušovi. Narodil se s oslíma ušima, kančími zuby a kozí bradou. Podle legendy ze zlosti nad ošklivostí svých dětí postupně zavraždil svých šest manželek a jeho duch prý na hradě v noci a za bouřky dodnes straší na voze taženém černými psy.",
+  "image": "/foto/nahrane/20261028_101838.jpg"
 }
