@@ -1,9 +1,9 @@
 {
   "name": "Úslava",
+  "featured": true,
   "order": 100,
-  "featured": false,
-  "kicker": "",
-  "text": "",
-  "fact": "",
-  "image": ""
+  "kicker": "Přírodní lokalita • Malebné říční údolí a meandry pod Radyní",
+  "text": "Malebné údolí řeky Úslavy vytváří přirozenou osu celého Starého Plzence a odděluje od sebe dva nejvýznamnější historické kopce regionu – hradní vrch Radyni a přemyslovské hradiště Hůrku. Po většinu roku jde o klidnou a mělkou řeku lemovanou břehovými porosty, lužními loukami a historickými mlýny. Přímo ve městě tok přetíná známý jez a silniční most, u kterého vede i moderní cyklostezka s podjezdem. Pouze při jarním tání nebo po vydatných deštích nabízí úsek ze Starého Plzence směrem na plzeňský Koterov a Božkov dostatek vody pro občasné vodácké nadšence. V běžných dnech pak klidné břehy a okolní pěšiny slouží především k nenáročným procházkám, rybaření i cyklovýletům v bezprostřední blízkosti přírody.",
+  "fact": "Řeka Úslava vděčí za své jméno obyčejnému tiskařskému šotkovi. Původně se totiž po staletí jmenovala Bradlava, ale v roce 1712 ji sazeč v německé zeměpisné knize omylem zaměnil se sousední Úhlavou a ještě udal překlep v písmenu – tak vznikla dnešní Úslava, zatímco původní jméno zůstalo jen jejímu největšímu přítoku, říčce Bradavě.",
+  "image": "/foto/nahrane/20260815_111547.jpg"
 }
