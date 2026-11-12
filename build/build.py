@@ -36,6 +36,12 @@ SITE_URL = os.environ.get('SITE_URL', 'https://bctsurvival.cz').rstrip('/')
 PREVIEW = os.environ.get('PREVIEW') == '1'
 BIG, SMALL, PLACE = 1300, 480, 480
 MAX_PHOTOS = 3
+# Samostatné záložky Výbava a Proviant: složka položek, pole a složky se štítky (1. a 2. štítek)
+SEKCE = {
+    'vybava': {'fields': ('kategorie', 'vyrobce'), 'labels': ('vybava-kategorie', 'vybava-vyrobci')},
+    'proviant': {'fields': ('typ', 'vyrobce'), 'labels': ('proviant-typy', 'proviant-vyrobci')},
+}
+SEKCE_PHOTOS = 5
 GUARD = '<?php exit; ?>\n'
 
 
@@ -76,6 +82,61 @@ def last_change(path):
     return r.stdout.strip()
 
 
+def make_photos(items, folder, limit, problems, who):
+    """Zmenší fotky do foto/<folder>/ (velká + náhled). Vrací seznam pro šablony."""
+    photos, used = [], set()
+    for p in (items or [])[:limit]:
+        rel = (p.get('image') or '').lstrip('/')
+        src = ROOT / rel
+        if not rel or not src.is_file():
+            problems.append(f'{who}: chybí fotka {rel}')
+            continue
+        name = slug(src.stem)
+        while name in used:
+            name += '-2'
+        used.add(name)
+        im = open_photo(src)
+        w, h = save(im, BUILD / 'foto' / folder / f'{name}.jpg', BIG, 80)
+        sw, sh = save(im, BUILD / 'foto' / folder / f'{name}-m.jpg', SMALL, 74)
+        photos.append({'file': f'{name}.jpg', 'w': w, 'h': h, 'sw': sw, 'sh': sh,
+                       'caption': (p.get('caption') or '').strip()})
+    return photos
+
+
+def read_labels(folder):
+    """Štítky z administrace (content/<folder>): klíč, název, barva, pořadí."""
+    out = []
+    for f in sorted((ROOT / 'content' / folder).glob('*.json')):
+        d = json.loads(f.read_text(encoding='utf-8'))
+        name = (d.get('name') or f.stem).strip()
+        out.append({'key': ascii_id(f.stem), 'label': name, 'color': d.get('color') or '#3d4a57',
+                    'order': int(d.get('order') or 100)})
+    out.sort(key=lambda x: (x['order'], x['label'].lower()))
+    return out
+
+
+def write_sekce(problems):
+    """Výbava a Proviant: položky (nejvýš 5 fotek) a jejich štítky -> data/sekce-<název>."""
+    for sek, cfg in SEKCE.items():
+        f1, f2 = cfg['fields']
+        items = []
+        for f in sorted((ROOT / 'content' / sek).glob('*.json')):
+            e = json.loads(f.read_text(encoding='utf-8'))
+            iid = ascii_id(f.stem)
+            items.append({
+                'id': iid,
+                'date': str(e.get('date', ''))[:10],
+                'title': (e.get('title') or iid).strip(),
+                'l1': ascii_id(e.get(f1) or '') if e.get(f1) else '',
+                'l2': ascii_id(e.get(f2) or '') if e.get(f2) else '',
+                'text': (e.get('text') or '').strip(),
+                'photos': make_photos(e.get('photos'), f'{sek}-{iid}', SEKCE_PHOTOS, problems, f'{sek}/{iid}'),
+                'published': e.get('published', True) is not False,
+                'updated': last_change(f) or str(e.get('date', ''))[:10],
+            })
+        write_data(f'sekce-{sek}', {'items': items, 'labels': [read_labels(cfg['labels'][0]), read_labels(cfg['labels'][1])]})
+
+
 def write_data(name, value):
     (BUILD / 'data').mkdir(parents=True, exist_ok=True)
     (BUILD / 'data' / f'{name}.json.php').write_text(
@@ -85,7 +146,8 @@ def write_data(name, value):
 def prepare():
     shutil.rmtree(BUILD, ignore_errors=True)
     BUILD.mkdir()
-    for f in ['index.php', 'denik.php', 'mista.php', 'o-mne.php', 'zaznam.php', 'stranka.php']:
+    for f in ['index.php', 'denik.php', 'mista.php', 'o-mne.php', 'zaznam.php', 'stranka.php',
+              'vybava.php', 'proviant.php', 'polozka.php']:
         shutil.copy(ROOT / f, BUILD / f)
     for d in ['inc', 'css', 'js', 'img']:
         shutil.copytree(ROOT / d, BUILD / d)
@@ -98,22 +160,7 @@ def prepare():
     for f in sorted((ROOT / 'content/zapisy').glob('*.json')):
         e = json.loads(f.read_text(encoding='utf-8'))
         eid = ascii_id(f.stem)
-        photos, used = [], set()
-        for p in (e.get('photos') or [])[:MAX_PHOTOS]:
-            rel = (p.get('image') or '').lstrip('/')
-            src = ROOT / rel
-            if not rel or not src.is_file():
-                problems.append(f'{eid}: chybí fotka {rel}')
-                continue
-            name = slug(src.stem)
-            while name in used:
-                name += '-2'
-            used.add(name)
-            im = open_photo(src)
-            w, h = save(im, BUILD / 'foto' / eid / f'{name}.jpg', BIG, 80)
-            sw, sh = save(im, BUILD / 'foto' / eid / f'{name}-m.jpg', SMALL, 74)
-            photos.append({'file': f'{name}.jpg', 'w': w, 'h': h, 'sw': sw, 'sh': sh,
-                           'caption': (p.get('caption') or '').strip()})
+        photos = make_photos(e.get('photos'), eid, MAX_PHOTOS, problems, eid)
         entries.append({
             'id': eid,
             'date': str(e.get('date', ''))[:10],
@@ -169,7 +216,7 @@ def prepare():
         if p.get('published') is False:
             continue
         pid = slug(f.stem)
-        if pid in RESERVED or pid.startswith('zaznam-'):
+        if pid in RESERVED or pid.startswith(('zaznam-', 'vybava-', 'proviant-')):
             pid += '-stranka'
         photos = []
         for i, ph in enumerate((p.get('photos') or [])[:12]):
@@ -191,6 +238,7 @@ def prepare():
     pages.sort(key=lambda x: (x['order'], x['title']))
     write_data('stranky', pages)
 
+    write_sekce(problems)
     write_theme()
     write_druhy()
 
@@ -199,7 +247,7 @@ def prepare():
     return entries
 
 
-RESERVED = {'index', 'denik', 'mista', 'o-mne', 'zaznam', 'stranka', '404', 'admin', 'css', 'js', 'img', 'foto',
+RESERVED = {'index', 'denik', 'mista', 'o-mne', 'zaznam', 'stranka', '404', 'vybava', 'proviant', 'polozka', 'admin', 'css', 'js', 'img', 'foto',
             'sitemap', 'robots', 'llms'}
 
 
@@ -297,6 +345,11 @@ def write_druhy():
         c, _ = readable(c, (255, 255, 255))  # bílý text na štítku musí být čitelný
         k = re.sub(r'[^a-zA-Z0-9_-]', '', d['key'])
         css += f'.type-{k}, .tab-{k} {{ --tab: {to_hex(c)}; }}\n'
+    for sek, cfg in SEKCE.items():
+        for folder in cfg['labels']:
+            for d in read_labels(folder):
+                c, _ = readable(hex_rgb(d['color']) or (61, 74, 87), (255, 255, 255))
+                css += f'.tab-{folder}-{d["key"]} {{ --tab: {to_hex(c)}; }}\n'
     (BUILD / 'css/druhy.css').write_text(css, encoding='utf-8')
 
 
@@ -329,6 +382,8 @@ def render(entries):
             html = html.replace(local, SITE_URL)
             html = re.sub(r'zaznam\.php\?id=([\w-]+)', r'zaznam-\1.html', html)
             html = re.sub(r'stranka\.php\?id=([\w-]+)', r'\1.html', html)
+            html = re.sub(r'polozka\.php\?s=(vybava|proviant)&(?:amp;)?id=([\w-]+)', r'\1-\2.html', html)
+            html = html.replace('vybava.php', 'vybava.html').replace('proviant.php', 'proviant.html')
             html = html.replace('denik.php', 'denik.html').replace('o-mne.php', 'o-mne.html').replace('mista.php', 'mista.html')
             if PREVIEW:
                 html = html.replace('<head>', '<head>\n<meta name="robots" content="noindex, nofollow">', 1)
@@ -341,6 +396,12 @@ def render(entries):
                  '404.html': '/zaznam.php?id=neexistuje'}
         for p in json.loads((BUILD / 'data/stranky.json.php').read_text(encoding='utf-8')[len(GUARD):]):
             pages[f'{p["id"]}.html'] = '/stranka.php?id=' + p['id']
+        for sek in SEKCE:
+            pages[f'{sek}.html'] = f'/{sek}.php'
+            data = json.loads((BUILD / f'data/sekce-{sek}.json.php').read_text(encoding='utf-8')[len(GUARD):])
+            for it in data['items']:
+                if it['published']:
+                    pages[f'{sek}-{it["id"]}.html'] = f'/polozka.php?s={sek}&id={it["id"]}'
         for e in entries:
             if e['published']:
                 pages[f'zaznam-{e["id"]}.html'] = '/zaznam.php?id=' + e['id']

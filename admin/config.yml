@@ -132,10 +132,194 @@ collections:
       - { name: fact, label: Zajímavost na úvodu, widget: text, required: false, hint: "Krátká zajímavost do rámečku „Věděli jste?“ na úvodní stránce (1–2 věty). Když zůstane prázdná, použije se popis." }
       - { name: image, label: Fotka, widget: image, required: false }
 
+  - divider: true
+
+  - name: vybava
+    label: Výbava
+    label_singular: Položka výbavy
+    description: Samostatná záložka Výbava (mimo deník). Každá položka má Kategorii (1. štítek) a Výrobce (2. štítek) a nejvýš 5 fotek.
+    folder: content/vybava
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{date}} · {{title}}"
+    sortable_fields: [date, title]
+    view_filters:
+      - { label: Skryté, field: published, pattern: false }
+    fields:
+      - { name: title, label: Název, widget: string }
+      - { name: date, label: Datum, widget: datetime, time_format: false, date_format: "D. M. YYYY", format: "YYYY-MM-DD", hint: "Podle data se řadí (nejnovější nahoře)." }
+      - name: kategorie
+        label: Kategorie (1. štítek)
+        widget: relation
+        collection: vybava-kategorie
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        hint: Novou kategorii přidáte v sekci Kategorie výbavy.
+      - name: vyrobce
+        label: Výrobce (2. štítek)
+        widget: relation
+        collection: vybava-vyrobci
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+        hint: Nového výrobce přidáte v sekci Výrobci výbavy.
+      - name: text
+        label: Text
+        widget: markdown
+        required: false
+        buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list]
+        editor_components: []
+      - name: photos
+        label: Fotky
+        label_singular: fotku
+        widget: list
+        max: 5
+        required: false
+        hint: Nejvýš 5 fotek. První je hlavní (velká), další 4 se ukážou menší pod ní. Velké fotky z mobilu se samy zmenší.
+        fields:
+          - { name: image, label: Fotka, widget: image }
+          - { name: caption, label: Popisek, widget: string, required: false, hint: "Co je na fotce (nepovinné)." }
+      - { name: published, label: Zveřejnit na webu, widget: boolean, default: true }
+
+  - name: vybava-kategorie
+    label: Kategorie výbavy
+    label_singular: Kategorie
+    description: Kategorie pro záložku Výbava (1. štítek). Každá má vlastní barvu a filtr.
+    folder: content/vybava-kategorie
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{name}}"
+    identifier_field: name
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: Název, widget: string, hint: "Např. Nože, Batohy, Oblečení, Vaření." }
+      - { name: color, label: Barva štítku, widget: color, default: "#2f5d34", hint: "Text na štítku je bílý. Příliš světlou barvu web sám ztmaví, aby byl štítek čitelný." }
+      - { name: order, label: Pořadí, widget: number, value_type: int, default: 100, required: false, hint: "Menší číslo = dřív (víc vlevo)." }
+
+  - name: vybava-vyrobci
+    label: Výrobci výbavy
+    label_singular: Výrobce
+    description: Výrobci pro záložku Výbava (2. štítek).
+    folder: content/vybava-vyrobci
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{name}}"
+    identifier_field: name
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: Název, widget: string, hint: "Např. Fjällräven, Mora, Helikon-Tex." }
+      - { name: color, label: Barva štítku, widget: color, default: "#3d4a57", hint: "Text na štítku je bílý. Příliš světlou barvu web sám ztmaví, aby byl štítek čitelný." }
+      - { name: order, label: Pořadí, widget: number, value_type: int, default: 100, required: false, hint: "Menší číslo = dřív (víc vlevo)." }
+
+  - divider: true
+
+  - name: proviant
+    label: Proviant
+    label_singular: Položka proviantu
+    description: Samostatná záložka Proviant (mimo deník). Každá položka má Typ stravy (1. štítek) a Výrobce nebo armádu (2. štítek) a nejvýš 5 fotek.
+    folder: content/proviant
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{date}} · {{title}}"
+    sortable_fields: [date, title]
+    view_filters:
+      - { label: Skryté, field: published, pattern: false }
+    fields:
+      - { name: title, label: Název, widget: string }
+      - { name: date, label: Datum, widget: datetime, time_format: false, date_format: "D. M. YYYY", format: "YYYY-MM-DD", hint: "Podle data se řadí (nejnovější nahoře)." }
+      - name: typ
+        label: Typ stravy (1. štítek)
+        widget: relation
+        collection: proviant-typy
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        hint: Nový typ přidáte v sekci Typy stravy.
+      - name: vyrobce
+        label: Výrobce nebo armáda (2. štítek)
+        widget: relation
+        collection: proviant-vyrobci
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+        hint: Nového výrobce nebo armádu přidáte v sekci Výrobci a armády.
+      - name: text
+        label: Text
+        widget: markdown
+        required: false
+        buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list]
+        editor_components: []
+      - name: photos
+        label: Fotky
+        label_singular: fotku
+        widget: list
+        max: 5
+        required: false
+        hint: Nejvýš 5 fotek. První je hlavní (velká), další 4 se ukážou menší pod ní. Velké fotky z mobilu se samy zmenší.
+        fields:
+          - { name: image, label: Fotka, widget: image }
+          - { name: caption, label: Popisek, widget: string, required: false, hint: "Co je na fotce (nepovinné)." }
+      - { name: published, label: Zveřejnit na webu, widget: boolean, default: true }
+
+  - name: proviant-typy
+    label: Typy stravy
+    label_singular: Typ stravy
+    description: Typy stravy pro záložku Proviant (1. štítek). Každý má vlastní barvu a filtr.
+    folder: content/proviant-typy
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{name}}"
+    identifier_field: name
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: Název, widget: string, hint: "Např. Bojová dávka, Sušené jídlo, Konzerva." }
+      - { name: color, label: Barva štítku, widget: color, default: "#7a4a1e", hint: "Text na štítku je bílý. Příliš světlou barvu web sám ztmaví, aby byl štítek čitelný." }
+      - { name: order, label: Pořadí, widget: number, value_type: int, default: 100, required: false, hint: "Menší číslo = dřív (víc vlevo)." }
+
+  - name: proviant-vyrobci
+    label: Výrobci a armády
+    label_singular: Výrobce nebo armáda
+    description: Výrobci a armády pro záložku Proviant (2. štítek).
+    folder: content/proviant-vyrobci
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{name}}"
+    identifier_field: name
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: Název, widget: string, hint: "Např. Armáda ČR, US Army, Adventure Menu." }
+      - { name: color, label: Barva štítku, widget: color, default: "#4a5a2a", hint: "Text na štítku je bílý. Příliš světlou barvu web sám ztmaví, aby byl štítek čitelný." }
+      - { name: order, label: Pořadí, widget: number, value_type: int, default: 100, required: false, hint: "Menší číslo = dřív (víc vlevo)." }
+
+  - divider: true
+
   - name: stranky
     label: Stránky
     label_singular: Stránka
-    description: Vlastní stránky webu, např. Kontakt, Akce nebo Výbava. Každá může mít odkaz v hlavním menu.
+    description: Vlastní stránky webu, např. Kontakt nebo Akce. Každá může mít odkaz v hlavním menu.
     folder: content/stranky
     format: json
     extension: json
@@ -146,7 +330,7 @@ collections:
     summary: "{{title}}"
     sortable_fields: [order, title]
     fields:
-      - { name: title, label: Nadpis, widget: string, hint: "Z nadpisu vznikne i adresa stránky (např. Výbava → bctsurvival.cz/vybava.html). Adresa se při pozdější změně nadpisu nemění." }
+      - { name: title, label: Nadpis, widget: string, hint: "Z nadpisu vznikne i adresa stránky (např. Kontakt → bctsurvival.cz/kontakt.html). Adresa se při pozdější změně nadpisu nemění." }
       - { name: published, label: Zveřejnit na webu, widget: boolean, default: true }
       - { name: menu, label: Zobrazit v hlavním menu, widget: boolean, default: true }
       - { name: menu_label, label: Název v menu, widget: string, required: false, hint: "Krátký název do menu (1–2 slova). Když zůstane prázdný, použije se nadpis." }

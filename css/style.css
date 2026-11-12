@@ -219,6 +219,7 @@ select, input[type="search"], input[type="text"], input[type="email"], input[typ
 .js .filters .btn { display: none; }
 .result-count { color: var(--muted); display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
 .reset { font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+.reset[hidden] { display: none; }
 .empty { padding: 32px; text-align: center; background: var(--surface); border-radius: var(--radius); }
 
 /* Záznam */
@@ -232,6 +233,14 @@ select, input[type="search"], input[type="text"], input[type="email"], input[typ
 .gallery figure { margin: 0; }
 .gallery img { width: 100%; border-radius: 8px; background: var(--surface-2); }
 .gallery.n2 img, .gallery.n3 figure:not(:first-child) img { aspect-ratio: 4 / 3; object-fit: cover; }
+/* Výbava a Proviant: 1 velká fotka + až 4 malé */
+.gallery.n4, .gallery.n5 { grid-template-columns: 1fr 1fr; }
+.gallery.n4 figure:first-child, .gallery.n5 figure:first-child { grid-column: 1 / -1; }
+.gallery.n4 figure:not(:first-child) img, .gallery.n5 figure:not(:first-child) img { aspect-ratio: 4 / 3; object-fit: cover; }
+@media (min-width: 700px) {
+  .gallery.n4 { grid-template-columns: repeat(3, 1fr); }
+  .gallery.n5 { grid-template-columns: repeat(4, 1fr); }
+}
 .gallery figcaption { font-size: 15px; color: var(--muted); padding-top: 6px; }
 .zoom { display: block; cursor: zoom-in; }
 .prose { max-width: 70ch; }

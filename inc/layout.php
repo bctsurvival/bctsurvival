@@ -15,7 +15,8 @@ function page_head(array $o): void
     $canonical = $base . '/' . ($o['path'] ?? '');
     $image = $o['image'] ?? $base . '/img/og.jpg';
     $nav = $o['nav'] ?? '';
-    $items = ['' => 'Úvod', 'denik.php' => 'Deník', 'mista.php' => 'Místa', 'o-mne.php' => 'O mně'];
+    $items = ['' => 'Úvod', 'denik.php' => 'Deník', 'mista.php' => 'Místa',
+        'vybava.php' => 'Výbava', 'proviant.php' => 'Proviant', 'o-mne.php' => 'O mně'];
     foreach (stranky() as $p) {
         if ($p['menu']) {
             $items['stranka.php?id=' . $p['id']] = $p['menu_label'] ?: $p['title'];
@@ -112,25 +113,28 @@ function page_foot(): void
 <?php
 }
 
-/** Kartotéční lístek v přehledu. */
+/** Kartotéční lístek v přehledu (zápis v deníku nebo položka Výbavy či Proviantu). */
 function entry_card(array $e, bool $hidden = false, string $heading = 'h3'): void
 {
     $p = $e['photos'][0] ?? null;
     $places = $e['places'] ?? [];
-    $search = mb_strtolower($e['title'] . ' ' . implode(' ', $places) . ' ' . $e['text'], 'UTF-8');
+    $tabs = $e['tabs'] ?? array_map(fn($t) => ['tab-' . $t, type_label($t)], entry_types($e));
+    $f1 = $e['filter1'] ?? entry_types($e);
+    $f2 = $e['filter2'] ?? $places;
+    $search = mb_strtolower($e['title'] . ' ' . implode(' ', $places) . ' ' . implode(' ', array_column($tabs, 1)) . ' ' . $e['text'], 'UTF-8');
     ?>
-<li class="card type-<?= e($e['type']) ?>"<?= $hidden ? ' hidden' : '' ?>
-    data-type="<?= e(implode(' ', entry_types($e))) ?>" data-year="<?= e(substr($e['date'], 0, 4)) ?>"
-    data-places="<?= e(implode('|', $places)) ?>" data-search="<?= e((string)preg_replace('~\s+~u', ' ', $search)) ?>">
+<li class="card <?= e(isset($e['tabs']) ? ($tabs[0][0] ?? '') : 'type-' . $e['type']) ?>"<?= $hidden ? ' hidden' : '' ?>
+    data-type="<?= e(implode(' ', $f1)) ?>" data-year="<?= e(substr($e['date'], 0, 4)) ?>"
+    data-places="<?= e(implode('|', $f2)) ?>" data-search="<?= e((string)preg_replace('~\s+~u', ' ', $search)) ?>">
   <article>
-    <a class="card-link" href="<?= e(entry_url($e)) ?>">
+    <a class="card-link" href="<?= e($e['url'] ?? entry_url($e)) ?>">
       <div class="card-img">
         <?php if ($p): ?>
         <img src="<?= e(photo_url($e, $p, true)) ?>" width="<?= (int)($p['sw'] ?? 480) ?>" height="<?= (int)($p['sh'] ?? 360) ?>" alt="" loading="lazy" decoding="async">
         <?php endif; ?>
       </div>
       <div class="card-body">
-        <p class="card-tabs"><?php foreach (entry_types($e) as $t): ?><span class="card-tab tab-<?= e($t) ?>"><?= e(type_label($t)) ?></span><?php endforeach; ?></p>
+        <?php if ($tabs): ?><p class="card-tabs"><?php foreach ($tabs as [$cls, $lbl]): ?><span class="card-tab <?= e($cls) ?>"><?= e($lbl) ?></span><?php endforeach; ?></p><?php endif; ?>
         <<?= $heading ?> class="card-title"><?= e($e['title']) ?></<?= $heading ?>>
         <p class="card-meta"><time datetime="<?= e($e['date']) ?>"><?= e(date_cz($e['date'])) ?></time><?php if ($places): ?> · <?= e(implode(', ', array_slice($places, 0, 3))) ?><?php endif; ?></p>
       </div>

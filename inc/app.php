@@ -232,7 +232,69 @@ function entry_url(array $e, bool $abs = false): string
 function photo_url(array $e, array $p, bool $small = false, bool $abs = false): string
 {
     $f = $small ? preg_replace('~\.jpg$~', '-m.jpg', $p['file']) : $p['file'];
-    return ($abs ? site_url() . '/' : '') . 'foto/' . rawurlencode($e['id']) . '/' . rawurlencode($f);
+    return ($abs ? site_url() . '/' : '') . 'foto/' . rawurlencode($e['dir'] ?? $e['id']) . '/' . rawurlencode($f);
+}
+
+/* ---------- Výbava a Proviant (samostatné záložky) ---------- */
+
+/** Popis záložek: názvy, štítky a parametry filtru. */
+function sekce_def(): array
+{
+    return [
+        'vybava' => [
+            'title' => 'Výbava', 'one' => 'položka výbavy',
+            'lead' => 'Vybavení, které používám venku: batohy, nože, oblečení, vaření a další. Vyberte kategorii nebo výrobce, případně hledejte podle slova.',
+            'l1' => 'Kategorie', 'l2' => 'Výrobce', 'l2_all' => 'Všichni výrobci',
+            'p1' => 'kategorie', 'p2' => 'vyrobce', 'folders' => ['vybava-kategorie', 'vybava-vyrobci'],
+            'placeholder' => 'např. nůž, batoh, Fjällräven',
+        ],
+        'proviant' => [
+            'title' => 'Proviant', 'one' => 'položka proviantu',
+            'lead' => 'Jídlo do batohu: armádní dávky, sušené jídlo a další proviant. Vyberte typ stravy nebo výrobce, případně hledejte podle slova.',
+            'l1' => 'Typ stravy', 'l2' => 'Výrobce nebo armáda', 'l2_all' => 'Všichni výrobci a armády',
+            'p1' => 'typ', 'p2' => 'vyrobce', 'folders' => ['proviant-typy', 'proviant-vyrobci'],
+            'placeholder' => 'např. BPD, guláš, MRE',
+        ],
+    ];
+}
+
+/**
+ * Položky a štítky záložky. Položky jsou připravené pro entry_card():
+ * url, dir (složka fotek), tabs (štítky na kartičce), filter1/filter2 (klíče pro filtr).
+ */
+function sekce(string $sek): array
+{
+    static $cache = [];
+    if (isset($cache[$sek])) {
+        return $cache[$sek];
+    }
+    $def = sekce_def()[$sek];
+    $data = data_read('sekce-' . $sek, ['items' => [], 'labels' => [[], []]]);
+    $labels = [[], []];
+    foreach ([0, 1] as $n) {
+        foreach ($data['labels'][$n] ?? [] as $l) {
+            $labels[$n][$l['key']] = $l;
+        }
+    }
+    $items = array_values(array_filter($data['items'] ?? [], fn($i) => !empty($i['published'])));
+    usort($items, fn($a, $b) => strcmp($b['date'] . $b['id'], $a['date'] . $a['id']));
+    foreach ($items as &$i) {
+        $i['dir'] = $sek . '-' . $i['id'];
+        $i['url'] = 'polozka.php?s=' . $sek . '&id=' . rawurlencode($i['id']);
+        $i['tabs'] = [];
+        $i['filter1'] = [];
+        $i['filter2'] = [];
+        foreach ([0, 1] as $n) {
+            $k = $i[$n ? 'l2' : 'l1'] ?? '';
+            if ($k !== '' && isset($labels[$n][$k])) {
+                $i['tabs'][] = ['tab-' . $def['folders'][$n] . '-' . $k, $labels[$n][$k]['label']];
+                $i[$n ? 'filter2' : 'filter1'][] = $k;
+            }
+        }
+        $i['places'] = [];
+    }
+    unset($i);
+    return $cache[$sek] = ['def' => $def, 'items' => $items, 'labels' => $labels];
 }
 
 /** Krátký výtah z textu pro popisky a meta description. */
@@ -330,6 +392,9 @@ function regen_static(): void
         . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
     $last = $list[0]['updated'] ?? ($list[0]['date'] ?? date('Y-m-d'));
     $urls = ['' => $last, 'denik.php' => $last, 'mista.php' => $last, 'o-mne.php' => $last];
+    foreach (array_keys(sekce_def()) as $sek) {
+        $urls[$sek . '.php'] = sekce($sek)['items'][0]['updated'] ?? $last;
+    }
     foreach (stranky() as $p) {
         $urls['stranka.php?id=' . $p['id']] = $p['updated'] ?: $last;
     }
@@ -339,6 +404,11 @@ function regen_static(): void
     foreach ($list as $e) {
         $x .= "  <url><loc>" . e(entry_url($e, true)) . "</loc><lastmod>"
             . substr($e['updated'] ?? $e['date'], 0, 10) . "</lastmod></url>\n";
+    }
+    foreach (array_keys(sekce_def()) as $sek) {
+        foreach (sekce($sek)['items'] as $i) {
+            $x .= "  <url><loc>" . e("$base/{$i['url']}") . "</loc><lastmod>" . substr($i['updated'] ?: $i['date'], 0, 10) . "</lastmod></url>\n";
+        }
     }
     $x .= "</urlset>\n";
     file_put_contents(APP_ROOT . '/sitemap.xml', $x);
@@ -363,6 +433,8 @@ function regen_static(): void
         . "- [Úvod]($base/): kdo je {$s['nickname']} a co na webu najdete\n"
         . "- [Deník]($base/denik.php): všechny záznamy s filtrem podle druhu, místa a roku\n"
         . "- [Místa]($base/mista.php): zajímavosti o místech, kam autor chodí\n"
+        . "- [Výbava]($base/vybava.php): vybavení, které autor používá, podle kategorie a výrobce\n"
+        . "- [Proviant]($base/proviant.php): jídlo do batohu a armádní dávky podle typu stravy a výrobce\n"
         . "- [O mně]($base/o-mne.php): profil autora\n";
     foreach (stranky() as $p) {
         $t .= "- [{$p['title']}]($base/stranka.php?id={$p['id']})" . ($p['description'] ? ': ' . $p['description'] : '') . "\n";
@@ -376,6 +448,18 @@ function regen_static(): void
         foreach ($byType[$k] as $e) {
             $t .= "- [" . date_cz($e['date'], false) . " – {$e['title']}](" . entry_url($e, true) . ")"
                 . ($e['text'] ? ': ' . excerpt($e['text'], 140) : '') . "\n";
+        }
+    }
+    foreach (sekce_def() as $sek => $d) {
+        $sx = sekce($sek);
+        if (!$sx['items']) {
+            continue;
+        }
+        $t .= "\n## {$d['title']}\n\n";
+        foreach ($sx['items'] as $i) {
+            $tags = implode(', ', array_column($i['tabs'], 1));
+            $t .= "- [{$i['title']}]($base/{$i['url']})" . ($tags ? " ($tags)" : '')
+                . ($i['text'] ? ': ' . excerpt($i['text'], 140) : '') . "\n";
         }
     }
     file_put_contents(APP_ROOT . '/llms.txt', $t);

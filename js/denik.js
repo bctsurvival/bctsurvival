@@ -8,12 +8,14 @@
   var empty = document.getElementById('empty');
   var reset = document.getElementById('reset');
   var timer;
+  // Názvy polí filtru: deník typ/misto, Výbava a Proviant mají vlastní (data-p1, data-p2)
+  var P1 = form.dataset.p1 || 'typ', P2 = form.dataset.p2 || 'misto';
 
   function norm(s) { return (s || '').toLocaleLowerCase('cs'); }
 
   function apply() {
     var data = new FormData(form);
-    var typ = data.get('typ') || '', misto = data.get('misto') || '', rok = data.get('rok') || '';
+    var typ = data.get(P1) || '', misto = data.get(P2) || '', rok = data.get('rok') || '';
     var q = norm((data.get('q') || '').trim());
     var shown = 0;
     cards.forEach(function (c) {
@@ -28,8 +30,8 @@
     document.querySelectorAll('.place-note').forEach(function (n) { n.hidden = n.dataset.place !== misto; });
     empty.hidden = shown > 0;
     var params = new URLSearchParams();
-    if (typ) params.set('typ', typ);
-    if (misto) params.set('misto', misto);
+    if (typ) params.set(P1, typ);
+    if (misto) params.set(P2, misto);
     if (rok) params.set('rok', rok);
     if (q) params.set('q', data.get('q').trim());
     var qs = params.toString();
@@ -40,9 +42,9 @@
   // Filtr z adresy (např. odkaz z úvodu na místo) i tam, kde ho nezpracuje server
   var init = new URLSearchParams(location.search);
   if (init.toString()) {
-    var t = form.querySelector('input[name="typ"][value="' + (init.get('typ') || '') + '"]');
+    var t = form.querySelector('input[name="' + P1 + '"][value="' + (init.get(P1) || '') + '"]');
     if (t) t.checked = true;
-    ['misto', 'rok', 'q'].forEach(function (k) {
+    [P2, 'rok', 'q'].forEach(function (k) {
       var el = form.querySelector('[name="' + k + '"]');
       if (el && init.get(k)) el.value = init.get(k);
     });
@@ -59,8 +61,8 @@
   reset.addEventListener('click', function (e) {
     e.preventDefault();
     form.reset();
-    form.querySelector('input[name="typ"][value=""]').checked = true;
-    form.querySelector('select[name="misto"]').value = '';
+    form.querySelector('input[name="' + P1 + '"][value=""]').checked = true;
+    form.querySelector('select[name="' + P2 + '"]').value = '';
     form.querySelector('select[name="rok"]').value = '';
     form.querySelector('input[name="q"]').value = '';
     apply();
