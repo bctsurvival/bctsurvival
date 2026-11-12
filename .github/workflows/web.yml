@@ -4,7 +4,9 @@ name: Sestavení webu
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch:   # ruční spuštění: Actions → Sestavení webu → Run workflow
+  schedule:
+    - cron: "0 2 * * *"   # každou noc (3:00 zimní čas, 4:00 letní čas), web se sám dorovná i po výpadku GitHubu
 
 permissions:
   contents: read
