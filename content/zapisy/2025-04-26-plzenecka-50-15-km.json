@@ -2,14 +2,15 @@
   "title": "Plzenecká 50 (15 km)",
   "date": "2025-04-26",
   "type": "pochod",
+  "type2": "",
   "places": [
     "Starý Plzenec"
   ],
   "text": "#plzenecka50",
   "photos": [
     {
-      "image": "/foto/2025-04-26-plzenecka-50-15-km/1.jpg",
-      "caption": "Kousek od startu - kostel sv. Jana Křtitele"
+      "image": "/foto/nahrane/20261113_100839.jpg",
+      "caption": ""
     },
     {
       "image": "/foto/2025-04-26-plzenecka-50-15-km/2.jpg",
@@ -20,7 +21,7 @@
       "caption": "Sedlecká skála 469m n.m. vyhlídka"
     }
   ],
+  "published": true,
   "fb_count": 64,
-  "fb_url": "https://www.facebook.com/media/set/?set=a.1027653759553047",
-  "published": true
+  "fb_url": "https://www.facebook.com/media/set/?set=a.1027653759553047"
 }
