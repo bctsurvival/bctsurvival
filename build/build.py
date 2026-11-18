@@ -239,6 +239,7 @@ def prepare():
     write_data('stranky', pages)
 
     write_sekce(problems)
+    write_images(problems)
     write_theme()
     write_druhy()
 
@@ -249,6 +250,46 @@ def prepare():
 
 RESERVED = {'index', 'denik', 'mista', 'o-mne', 'zaznam', 'stranka', '404', 'vybava', 'proviant', 'polozka', 'admin', 'css', 'js', 'img', 'foto',
             'sitemap', 'robots', 'llms'}
+
+
+def square(im, size):
+    """Ořízne fotku na čtverec (střed) a zmenší na size × size."""
+    return ImageOps.fit(im, (size, size), Image.LANCZOS, centering=(0.5, 0.4))
+
+
+def write_images(problems):
+    """Fotky a logo z administrace (content/obrazky.json). Prázdné pole = původní obrázek webu."""
+    f = ROOT / 'content/obrazky.json'
+    o = json.loads(f.read_text(encoding='utf-8')) if f.is_file() else {}
+    img = BUILD / 'img'
+
+    def src(key):
+        rel = (o.get(key) or '').lstrip('/')
+        if not rel:
+            return None
+        if not (ROOT / rel).is_file():
+            problems.append(f'Fotky a logo: chybí soubor {rel}')
+            return None
+        return open_photo(ROOT / rel)
+
+    # Úvodní obrázek a fotka na stránce O mně: čtverec 440 px (výchozí = logo)
+    logo440 = Image.open(img / 'logo-440.jpg').convert('RGB')
+    for key, out in [('hero_image', 'uvod.jpg'), ('about_photo', 'o-mne.jpg')]:
+        im = src(key)
+        square(im, 440).save(img / out, 'JPEG', quality=84, optimize=True, progressive=True) if im else logo440.save(img / out, 'JPEG', quality=90)
+    # Logo: hlavička, ikona v prohlížeči a v telefonu, Google
+    logo = src('logo')
+    if logo:
+        for size, name in [(48, 'favicon.png'), (96, 'logo-96.png'), (180, 'logo-180.png'), (512, 'logo-512.png')]:
+            square(logo, size).save(img / name, optimize=True)
+        square(logo, 440).save(img / 'logo-440.jpg', 'JPEG', quality=88)
+    # Náhled při sdílení (Facebook apod.): 1200 × 630
+    og = src('og_image')
+    if og:
+        ImageOps.fit(og, (1200, 630), Image.LANCZOS).save(img / 'og.jpg', 'JPEG', quality=84, optimize=True)
+    write_data('obrazky', {'about_alt': (o.get('about_alt') or '').strip() if o.get('about_photo') else '',
+                           'hero_alt': (o.get('hero_alt') or '').strip() if o.get('hero_image') else '',
+                           'about_custom': bool(o.get('about_photo')), 'hero_custom': bool(o.get('hero_image'))})
 
 
 def hex_rgb(h):

@@ -39,8 +39,8 @@ function page_head(array $o): void
 <meta property="og:image" content="<?= e($image) ?>">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1d2329">
-<link rel="icon" href="img/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="img/logo-180.png">
+<link rel="icon" href="<?= e(asset('img/favicon.png')) ?>" type="image/png">
+<link rel="apple-touch-icon" href="<?= e(asset('img/logo-180.png')) ?>">
 <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
 <?php if (is_file(APP_ROOT . '/css/druhy.css')): ?>
 <link rel="stylesheet" href="<?= e(asset('css/druhy.css')) ?>">
@@ -57,7 +57,7 @@ function page_head(array $o): void
 <header class="site-header">
   <div class="wrap header-in">
     <a class="brand" href="./" aria-label="<?= e($s['site_name']) ?> – úvod">
-      <img src="img/logo-96.png" width="48" height="48" alt="">
+      <img src="<?= e(asset('img/logo-96.png')) ?>" width="48" height="48" alt="">
       <span><?= e($s['site_name']) ?></span>
     </a>
     <nav aria-label="Hlavní menu">

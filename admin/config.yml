@@ -394,6 +394,17 @@ collections:
           - { name: about_text, label: Text sekce o autorovi, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
           - { name: contact_title, label: Nadpis kontaktu, widget: string, required: false }
           - { name: contact_text, label: Text pod e-mailem, widget: markdown, required: false, buttons: [bold, italic, link], editor_components: [] }
+      - name: obrazky
+        label: Fotky a logo
+        file: content/obrazky.json
+        format: json
+        fields:
+          - { name: about_photo, label: Fotka na stránce O mně, widget: image, required: false, hint: "Ořízne se na čtverec se zaoblenými rohy. Prázdné = logo." }
+          - { name: about_alt, label: Popis fotky O mně, widget: string, required: false, hint: "Co je na fotce (pro nevidomé a Google), např. Mnich s batohem na lesní cestě." }
+          - { name: hero_image, label: Obrázek na úvodní stránce, widget: image, required: false, hint: "Čtverec vedle názvu webu nahoře na úvodu. Ořízne se na čtverec. Prázdné = logo." }
+          - { name: hero_alt, label: Popis obrázku na úvodu, widget: string, required: false }
+          - { name: logo, label: Logo, widget: image, required: false, hint: "Malé logo v hlavičce, ikona v prohlížeči a v telefonu. Nejlépe čtvercové. Prázdné = současné logo." }
+          - { name: og_image, label: Náhled při sdílení na Facebooku, widget: image, required: false, hint: "Obrázek, který se ukáže, když někdo pošle odkaz na web. Ořízne se na 1200 × 630 px. Prázdné = současný náhled." }
       - name: vzhled
         label: Barvy webu
         file: content/vzhled.json

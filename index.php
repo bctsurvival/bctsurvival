@@ -40,7 +40,7 @@ page_head([
 ?>
 <section class="hero">
   <div class="wrap hero-in">
-    <img class="hero-logo" src="img/logo-440.jpg" width="256" height="256" alt="Logo BCT Survival: hrad Radyně nad lesem, oheň a letopočet 2015">
+    <img class="hero-logo" src="<?= e(asset('img/uvod.jpg')) ?>" width="256" height="256" alt="<?= e(obrazky()['hero_alt']) ?>">
     <div>
       <p class="kicker"><?= e($u['hero_kicker']) ?></p>
       <h1><?= e($s['site_name']) ?></h1>

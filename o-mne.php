@@ -28,7 +28,7 @@ page_head([
             'alternateName' => $s['site_name'],
             'description' => $s['tagline'] . ' ' . $s['intro'],
             'email' => 'mailto:' . $s['email'],
-            'image' => $base . '/img/logo-512.png',
+            'image' => $base . '/img/o-mne.jpg',
             'sameAs' => [$s['facebook']],
             'knowsAbout' => ['turistika', 'houbaření', 'bushcraft', 'geocaching', 'bojové potravinové dávky', 'nože'],
         ],
@@ -40,7 +40,7 @@ page_head([
 </div>
 <div class="wrap profile">
   <aside class="profile-card" aria-label="Profil">
-    <img src="img/logo-440.jpg" width="200" height="200" alt="Logo BCT Survival">
+    <img src="<?= e(asset('img/o-mne.jpg')) ?>" width="200" height="200" alt="<?= e(obrazky()['about_alt']) ?>">
     <h1><?= e($s['nickname']) ?></h1>
     <p class="muted">autor <?= e($s['site_name']) ?></p>
     <dl>

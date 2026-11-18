@@ -130,6 +130,18 @@ function uvod(): array
     return $u;
 }
 
+/** Popisky fotek z administrace (Nastavení › Fotky a logo). */
+function obrazky(): array
+{
+    $o = data_read('obrazky', []);
+    return [
+        'hero_alt' => ($o['hero_alt'] ?? '') !== '' ? $o['hero_alt']
+            : (!empty($o['hero_custom']) ? settings()['site_name'] : 'Logo BCT Survival: hrad Radyně nad lesem, oheň a letopočet 2015'),
+        'about_alt' => ($o['about_alt'] ?? '') !== '' ? $o['about_alt']
+            : (!empty($o['about_custom']) ? settings()['nickname'] : 'Logo BCT Survival'),
+    ];
+}
+
 /** Vlastní stránky z administrace. */
 function stranky(): array
 {
